@@ -267,7 +267,7 @@ public:
             const std::pair<int, bool> flattened = flattener_.GetFlattenedIndex (
                     position_index, texcoord_index, normal_index );
             const int flat_index = flattened.first;
-            CHECK ( flat_index >= 0 );
+            assert ( flat_index >= 0 );
             draw_mesh_.indices.push_back ( flat_index );
             if ( flattened.second ) {
                 // This is a new index. Keep track of index ranges and vertex
@@ -279,7 +279,7 @@ public:
                     group.min_index = flat_index;
                 }
                 const size_t new_loc = draw_mesh_.attribs.size();
-                CHECK ( 8*size_t ( flat_index ) == new_loc );
+                assert ( 8*size_t ( flat_index ) == new_loc );
                 for ( size_t i = 0; i < positionDim(); ++i ) {
                     draw_mesh_.attribs.push_back (
                         positions_->at ( positionDim() * position_index + i ) );

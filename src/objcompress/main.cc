@@ -82,7 +82,7 @@ int main ( int argc, const char* argv[] ) {
         const size_t here = group_starts.back().offset;
         const size_t length = draw_mesh.indices.size() - here;
         const bool divisible_by_3 = length % 3 == 0;
-        CHECK ( divisible_by_3 );
+        assert ( divisible_by_3 );
         group_lengths.push_back ( length );
         vertex_optimizer.AddTriangles ( &draw_mesh.indices[here], length,
                                         &webgl_meshes );
@@ -93,7 +93,7 @@ int main ( int argc, const char* argv[] ) {
             const size_t num_attribs = webgl_meshes[i].attribs.size();
             const size_t num_indices = webgl_meshes[i].indices.size();
             const bool kBadSizes = num_attribs % 8 || num_indices % 3;
-            CHECK ( !kBadSizes );
+            assert ( !kBadSizes );
             webgl_loader::CompressQuantizedAttribsToUtf8 ( webgl_meshes[i].attribs,
                     &sink );
             webgl_loader::CompressIndicesToUtf8 ( webgl_meshes[i].indices, &sink );

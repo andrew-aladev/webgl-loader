@@ -29,7 +29,7 @@ int main ( int argc, const char* argv[] ) {
         return -1;
     } else if ( argc == 4 ) {
         json_out = fopen ( argv[3], "w" );
-        CHECK ( json_out != NULL );
+        assert ( json_out != NULL );
     }
 
     FILE* fp = fopen ( argv[1], "r" );
@@ -62,7 +62,7 @@ int main ( int argc, const char* argv[] ) {
     fputs ( ",\n  \"urls\": {\n", json_out );
     // Pass 2: quantize, optimize, compress, report.
     FILE* utf8_out_fp = fopen ( argv[2], "wb" );
-    CHECK ( utf8_out_fp != NULL );
+    assert ( utf8_out_fp != NULL );
     fprintf ( json_out, "    \"%s\": [\n", argv[2] );
     webgl_loader::FileSink utf8_sink ( utf8_out_fp );
     size_t offset = 0;
@@ -89,7 +89,7 @@ int main ( int argc, const char* argv[] ) {
         }
         const size_t here = group_starts.back().offset;
         const size_t length = draw_mesh.indices.size() - here;
-        CHECK ( length % 3 == 0 );
+        assert ( length % 3 == 0 );
         group_lengths.push_back ( length );
         vertex_optimizer.AddTriangles ( &draw_mesh.indices[here], length,
                                         &webgl_meshes );
@@ -101,8 +101,8 @@ int main ( int argc, const char* argv[] ) {
         for ( size_t i = 0; i < webgl_meshes.size(); ++i ) {
             const size_t num_attribs = webgl_meshes[i].attribs.size();
             const size_t num_indices = webgl_meshes[i].indices.size();
-            CHECK ( num_attribs % 8 == 0 );
-            CHECK ( num_indices % 3 == 0 );
+            assert ( num_attribs % 8 == 0 );
+            assert ( num_indices % 3 == 0 );
             webgl_loader::EdgeCachingCompressor compressor ( webgl_meshes[i].attribs,
                     webgl_meshes[i].indices );
             compressor.Compress ( &utf8_sink );

@@ -23,7 +23,7 @@ template <typename IndexListT>
 size_t CountFifoCacheMisses ( const IndexListT& indices, const size_t cache_size ) {
     static const size_t kMaxCacheSize = 32;
     static const int kUnknownIndex = -1;
-    CHECK ( cache_size <= kMaxCacheSize );
+    assert ( cache_size <= kMaxCacheSize );
     int fifo[kMaxCacheSize + 1];
     for ( size_t i = 0; i < cache_size; ++i ) {
         fifo[i] = kUnknownIndex;

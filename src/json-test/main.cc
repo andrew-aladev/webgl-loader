@@ -130,7 +130,7 @@ public:
 
 private:
     void CheckString ( const char* str ) {
-        CHECK ( buf_ == str );
+        assert ( buf_ == str );
         buf_.clear();
     }
 

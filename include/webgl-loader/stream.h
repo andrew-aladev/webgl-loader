@@ -99,7 +99,7 @@ public:
     // |str| is unowned and must not be NULL.
     explicit StringSink ( std::string* str )
         : str_ ( str ) {
-        DCHECK ( str != NULL );
+        assert ( str != NULL );
     }
 
     virtual void Put ( char c ) {
@@ -187,14 +187,14 @@ public:
     const char* cursor;
 
     ErrorCode error() const {
-        DCHECK ( begin() <= cursor );
-        DCHECK ( cursor <= end() );
+        assert ( begin() <= cursor );
+        assert ( cursor <= end() );
         return error_;
     }
 
     ErrorCode Refill() {
-        DCHECK ( begin() <= cursor );
-        DCHECK ( cursor <= end() );
+        assert ( begin() <= cursor );
+        assert ( cursor <= end() );
         if ( cursor == end() ) {
             error_ = refiller_ ( this );
         }
@@ -238,7 +238,7 @@ public:
           fp_ ( fp ),
           buf_ ( buf ),
           size_ ( size ) {
-        DCHECK ( buf != NULL );
+        assert ( buf != NULL );
         // Disable buffering since we're doing it ourselves.
         // TODO check error.
         setvbuf ( fp_, NULL, _IONBF, 0 );

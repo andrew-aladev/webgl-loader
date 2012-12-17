@@ -27,21 +27,21 @@ public:
     void TestFromMemory() {
         const char bytes[] = { 1, 2, 3, 4, 5 };
         BufferedInput bi ( bytes, sizeof ( bytes ) );
-        CHECK ( kNoError == bi.error() );
+        assert ( kNoError == bi.error() );
         int sum = 0;
         while ( bi.cursor != bi.end() ) {
             sum += *bi.cursor++ ;
         }
-        CHECK ( 15 == sum );
-        CHECK ( kNoError == bi.error() );
+        assert ( 15 == sum );
+        assert ( kNoError == bi.error() );
         bi.Refill();
-        CHECK ( bi.begin() == bi.cursor );
-        CHECK ( kEndOfFile == bi.error() );
+        assert ( bi.begin() == bi.cursor );
+        assert ( kEndOfFile == bi.error() );
         sum = 0;
         while ( bi.cursor != bi.end() ) {
             sum += *bi.cursor++;
         }
-        CHECK ( 0 == sum );
+        assert ( 0 == sum );
     }
 };
 

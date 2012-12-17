@@ -22,12 +22,12 @@
 #include <webgl-loader/mesh.h>
 
 #define CHECK_INDICES(POSITION_INDEX, TEXCOORD_INDEX, NORMAL_INDEX) \
-  CHECK(POSITION_INDEX == position_index_);                         \
-  CHECK(TEXCOORD_INDEX == texcoord_index_);                         \
-  CHECK(NORMAL_INDEX == normal_index_)
+  assert(POSITION_INDEX == position_index_);                         \
+  assert(TEXCOORD_INDEX == texcoord_index_);                         \
+  assert(NORMAL_INDEX == normal_index_)
 
 #define PARSE_INDICES(LINE) \
-  CHECK(LINE + strlen(LINE) == ParseIndices(LINE))
+  assert(LINE + strlen(LINE) == ParseIndices(LINE))
 
 class ParseIndicesTester {
 public:
@@ -38,8 +38,8 @@ public:
     }
 
     void Test() {
-        CHECK ( NULL == ParseIndices ( "" ) );
-        CHECK ( NULL == ParseIndices ( "nodigit" ) );
+        assert ( NULL == ParseIndices ( "" ) );
+        assert ( NULL == ParseIndices ( "nodigit" ) );
         const char kBasic[] = "1/2/3";
         PARSE_INDICES ( kBasic );
         CHECK_INDICES ( 1, 2, 3 );
@@ -57,7 +57,7 @@ public:
         CHECK_INDICES ( 1, 122, 1 );
         next = ParseIndices ( next );
         CHECK_INDICES ( 2, 123, 2 );
-        CHECK ( kThree + strlen ( kThree ) == ParseIndices ( next ) );
+        assert ( kThree + strlen ( kThree ) == ParseIndices ( next ) );
         CHECK_INDICES ( 3, 117, 3 );
     }
 

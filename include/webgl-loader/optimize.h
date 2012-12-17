@@ -226,7 +226,7 @@ private:
                     }
                 }
             }
-            CHECK ( -1 != best_triangle );
+            assert ( -1 != best_triangle );
         }
         return best_triangle;
     }

@@ -17,12 +17,13 @@
 #ifndef WEBGL_LOADER_BASE_H_
 #define WEBGL_LOADER_BASE_H_
 
-#include <ctype.h>
-#include <float.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
+#include <cstdint>
+#include <cfloat>
+#include <cctype>
+#include <cstdio>
+#include <cstdlib>
+#include <cassert>
+#include <cstring>
 #include <string>
 #include <vector>
 
@@ -155,20 +156,5 @@ void ToHex ( uint32_t w, char out[9] ) {
 uint16_t Quantize ( float f, float in_min, float in_scale, uint16_t out_max ) {
     return static_cast<uint16_t> ( out_max * ( ( f-in_min ) / in_scale ) );
 }
-
-#ifndef CHECK
-# define CHECK(PRED) if (!(PRED)) {                                     \
-    fprintf(stderr, "%s:%d CHECK failed: ", __FILE__, __LINE__);        \
-    fputs(#PRED "\n", stderr);                                          \
-    exit(-1); } else
-#endif  // CHECK
-
-#ifndef DCHECK
-# ifdef DEBUG
-#  define DCHECK(PRED) CHECK(PRED)
-# else
-#  define DCHECK(PRED)
-# endif  // DEBUG
-#endif  // DCHECK
 
 #endif  // WEBGL_LOADER_BASE_H_

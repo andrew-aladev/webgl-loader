@@ -140,18 +140,18 @@ private:
 
 void TestBasic() {
     FaceList face_list;
-    CHECK ( 0 == face_list.size() );
+    assert ( 0 == face_list.size() );
     face_list.push_back ( 10 );
-    CHECK ( 1 == face_list.size() );
-    CHECK ( 10 == face_list.back() );
+    assert ( 1 == face_list.size() );
+    assert ( 10 == face_list.back() );
     face_list.push_back ( 20 );
-    CHECK ( 2 == face_list.size() );
-    CHECK ( 20 == face_list.back() );
+    assert ( 2 == face_list.size() );
+    assert ( 20 == face_list.back() );
     face_list.back() = 30;
-    CHECK ( 2 == face_list.size() );
-    CHECK ( 30 == face_list.back() );
+    assert ( 2 == face_list.size() );
+    assert ( 30 == face_list.back() );
     face_list.clear();
-    CHECK ( 0 == face_list.size() );
+    assert ( 0 == face_list.size() );
 }
 
 void TestPushClear ( size_t n ) {
@@ -161,16 +161,16 @@ void TestPushClear ( size_t n ) {
         const int to_push = i * i;
         face_list.push_back ( to_push );
         v.push_back ( to_push );
-        CHECK ( v.size() == face_list.size() );
-        CHECK ( to_push == face_list.back() );
+        assert ( v.size() == face_list.size() );
+        assert ( to_push == face_list.back() );
     }
-    CHECK ( n == face_list.size() );
-    CHECK ( std::equal ( face_list.begin(), face_list.end(), v.begin() ) );
+    assert ( n == face_list.size() );
+    assert ( std::equal ( face_list.begin(), face_list.end(), v.begin() ) );
     FaceList copied ( face_list );
-    CHECK ( n == copied.size() );
-    CHECK ( std::equal ( face_list.begin(), face_list.end(), copied.begin() ) );
+    assert ( n == copied.size() );
+    assert ( std::equal ( face_list.begin(), face_list.end(), copied.begin() ) );
     face_list.clear();
-    CHECK ( 0 == face_list.size() );
+    assert ( 0 == face_list.size() );
 }
 
 void TestPushPopBack ( size_t n ) {
@@ -180,20 +180,20 @@ void TestPushPopBack ( size_t n ) {
         const int to_push = i * i;
         face_list.push_back ( to_push );
         v.push_back ( to_push );
-        CHECK ( v.size() == face_list.size() );
-        CHECK ( to_push == face_list.back() );
+        assert ( v.size() == face_list.size() );
+        assert ( to_push == face_list.back() );
     }
     for ( size_t i = n - 1; i > 0; --i ) {
         const int to_pop = i * i;
-        CHECK ( v.size() == face_list.size() );
-        CHECK ( to_pop == face_list.back() );
+        assert ( v.size() == face_list.size() );
+        assert ( to_pop == face_list.back() );
         face_list.pop_back();
         v.pop_back();
     }
-    CHECK ( 0 == face_list.back() );
-    CHECK ( 1 == face_list.size() );
+    assert ( 0 == face_list.back() );
+    assert ( 1 == face_list.size() );
     face_list.pop_back();
-    CHECK ( 0 == face_list.size() );
+    assert ( 0 == face_list.size() );
 }
 
 int main ( int argc, char* argv[] ) {

@@ -75,9 +75,9 @@ void CompressIndicesToUtf8 ( const OptimizedIndexList& list,
     uint16_t index_high_water_mark = 0;
     for ( size_t i = 0; i < list.size(); ++i ) {
         const int index = list[i];
-        CHECK ( index >= 0 );
-        CHECK ( index <= index_high_water_mark );
-        CHECK ( Uint16ToUtf8 ( index_high_water_mark - index, utf8 ) );
+        assert ( index >= 0 );
+        assert ( index <= index_high_water_mark );
+        assert ( Uint16ToUtf8 ( index_high_water_mark - index, utf8 ) );
         if ( index == index_high_water_mark ) {
             ++index_high_water_mark;
         }
@@ -93,7 +93,7 @@ void CompressQuantizedAttribsToUtf8 ( const QuantizedAttribList& attribs,
             const uint16_t word = attribs[j];
             const uint16_t za = ZigZag ( static_cast<int16_t> ( word - prev ) );
             prev = word;
-            CHECK ( Uint16ToUtf8 ( za, utf8 ) );
+            assert ( Uint16ToUtf8 ( za, utf8 ) );
         }
     }
 }
@@ -143,7 +143,7 @@ public:
                 break;
             default:
                 DumpDebug();
-                CHECK ( false );
+                assert ( false );
             }
         }
     }
@@ -285,7 +285,7 @@ public:
             }
         }
         for ( size_t i = 0; i < codes_.size(); ++i ) {
-            CHECK ( Uint16ToUtf8 ( codes_[i], utf8 ) );
+            assert ( Uint16ToUtf8 ( codes_[i], utf8 ) );
         }
     }
 
@@ -429,7 +429,7 @@ private:
                 break;
             default:
                 DumpDebug();
-                CHECK ( false );
+                assert ( false );
             }
 
             // Check each edge of the input triangle against |e0| and
@@ -472,7 +472,7 @@ private:
 
     // Remove one edge and add two.
     void LruEdgeOne ( size_t i0, size_t i1, size_t match_index ) {
-        CHECK ( match_index < lru_size_ );
+        assert ( match_index < lru_size_ );
         // Shift |edge_lru_| by one element, starting with |match_index| + 1.
         memmove ( edge_lru_ + match_index + 2, edge_lru_ + match_index + 1,
                   ( lru_size_ - match_index ) * sizeof ( int ) );
@@ -484,8 +484,8 @@ private:
 
     // Remove two edges and add one.
     void LruEdgeTwo ( int i0, size_t match_index0, size_t match_index1 ) {
-        CHECK ( match_index0 < lru_size_ );
-        CHECK ( match_index1 < lru_size_ );
+        assert ( match_index0 < lru_size_ );
+        assert ( match_index1 < lru_size_ );
 
         // memmove 1
         // memmove 2

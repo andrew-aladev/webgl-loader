@@ -65,7 +65,7 @@ public:
         OnPutValue();
         char buf[kBufSize];
         int len = sprintf ( buf, "%d", i );
-        CHECK ( len > 0 && len < kBufSize );
+        assert ( len > 0 && len < kBufSize );
         PutN ( buf, len );
     }
 
@@ -73,7 +73,7 @@ public:
         OnPutValue();
         char buf[kBufSize];
         int len = sprintf ( buf, "%g", f );
-        CHECK ( len > 0 && len < kBufSize );
+        assert ( len > 0 && len < kBufSize );
         PutN ( buf, len );
     }
 
@@ -191,7 +191,7 @@ private:
     }
 
     void CheckNotKey() const {
-        CHECK ( GetState() != JSON_STATE_OBJECT_KEY_FIRST ||
+        assert ( GetState() != JSON_STATE_OBJECT_KEY_FIRST ||
                 GetState() != JSON_STATE_OBJECT_KEY );
     }
 
