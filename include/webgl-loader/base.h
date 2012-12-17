@@ -32,13 +32,6 @@ typedef unsigned short uint16;
 typedef short int16;
 typedef unsigned int uint32;
 
-// printf format strings for size_t.
-#ifdef _WIN32
-# define PRIuS "%Iu"
-#else  // Most compilers use the C99 format string.
-# define PRIuS "%zu"
-#endif
-
 #ifndef isfinite
 # define isfinite _finite
 #endif
