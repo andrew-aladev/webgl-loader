@@ -24,7 +24,6 @@
 #include <string>
 #include <vector>
 
-#define PutChar putc
 #define PRIuS "%zu"
 
 #ifndef isfinite

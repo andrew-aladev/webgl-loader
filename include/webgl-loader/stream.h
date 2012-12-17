@@ -17,7 +17,7 @@
 #ifndef WEBGL_LOADER_STREAM_H
 #define WEBGL_LOADER_STREAM_H
 
-#include <stdio.h>
+#include <cstdio>
 #include <string>
 #include <vector>
 
@@ -63,7 +63,7 @@ public:
     }
 
     virtual void Put ( char c ) {
-        PutChar ( c, fp_ );
+        putc ( c, fp_ );
     }
 
     virtual size_t PutN ( const char* data, size_t len ) {

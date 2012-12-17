@@ -14,7 +14,7 @@
 //   Google Inc
 //   andrew.aladjev@gmail.com
 
-#include <stdio.h>
+#include <cstdio>
 
 #include <webgl-loader/utf8.h>
 
@@ -24,18 +24,18 @@ namespace webgl_loader {
 // Some code duplication from Uint16ToUtf8 as a result.
 void DumpAllCodepoints ( FILE* fp ) {
     for ( size_t word = 0; word != 0x80; ++word ) {
-        PutChar ( word, fp );
+        putc ( word, fp );
     }
     for ( size_t word = 0x80; word != 0x800; ++word ) {
-        PutChar ( K_UTF8_TWO_BYTE_PREFIX + static_cast<char> ( word >> 6 ), fp );
-        PutChar ( K_UTF8_MORE_BYTES_PREFIX +
+        putc ( K_UTF8_TWO_BYTE_PREFIX + static_cast<char> ( word >> 6 ), fp );
+        putc ( K_UTF8_MORE_BYTES_PREFIX +
                   static_cast<char> ( word & K_UTF8_MORE_BYTES_MASK ), fp );
     }
     for ( size_t word = 0x800; word != 0x10000; ++word ) {
-        PutChar ( K_UTF8_THREE_BYTE_PREFIX + static_cast<char> ( word >> 12 ), fp );
-        PutChar ( K_UTF8_MORE_BYTES_PREFIX +
+        putc ( K_UTF8_THREE_BYTE_PREFIX + static_cast<char> ( word >> 12 ), fp );
+        putc ( K_UTF8_MORE_BYTES_PREFIX +
                   static_cast<char> ( ( word >> 6 ) & K_UTF8_MORE_BYTES_MASK ), fp );
-        PutChar ( K_UTF8_MORE_BYTES_PREFIX +
+        putc ( K_UTF8_MORE_BYTES_PREFIX +
                   static_cast<char> ( word & K_UTF8_MORE_BYTES_MASK ), fp );
     }
 }
