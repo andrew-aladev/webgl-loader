@@ -41,7 +41,7 @@ void AttribsToQuantizedAttribs ( const AttribList& interleaved_attribs,
     }
 }
 
-uint16 ZigZag ( int16 word ) {
+uint16_t ZigZag ( int16_t word ) {
     return ( word >> 15 ) ^ ( word << 1 );
 }
 
@@ -49,8 +49,8 @@ void CompressAABBToUtf8 ( const Bounds& bounds,
                           const BoundsParams& total_bounds,
                           ByteSinkInterface* utf8 ) {
     const int maxPosition = ( 1 << 14 ) - 1; // 16383;
-    uint16 mins[3] = { 0 };
-    uint16 maxes[3] = { 0 };
+    uint16_t mins[3] = { 0 };
+    uint16_t maxes[3] = { 0 };
     for ( int i = 0; i < 3; ++i ) {
         float total_min = total_bounds.mins[i];
         float total_scale = total_bounds.scales[i];
@@ -72,7 +72,7 @@ void CompressIndicesToUtf8 ( const OptimizedIndexList& list,
     // mark only ever moves by one at a time. Foruntately, the vertex
     // optimizer does that for us, to optimize for per-transform vertex
     // fetch order.
-    uint16 index_high_water_mark = 0;
+    uint16_t index_high_water_mark = 0;
     for ( size_t i = 0; i < list.size(); ++i ) {
         const int index = list[i];
         CHECK ( index >= 0 );
@@ -88,10 +88,10 @@ void CompressQuantizedAttribsToUtf8 ( const QuantizedAttribList& attribs,
                                       ByteSinkInterface* utf8 ) {
     for ( size_t i = 0; i < 8; ++i ) {
         // Use a transposed representation, and delta compression.
-        uint16 prev = 0;
+        uint16_t prev = 0;
         for ( size_t j = i; j < attribs.size(); j += 8 ) {
-            const uint16 word = attribs[j];
-            const uint16 za = ZigZag ( static_cast<int16> ( word - prev ) );
+            const uint16_t word = attribs[j];
+            const uint16_t za = ZigZag ( static_cast<int16_t> ( word - prev ) );
             prev = word;
             CHECK ( Uint16ToUtf8 ( za, utf8 ) );
         }
@@ -120,7 +120,7 @@ public:
         size_t match_indices[3];
         size_t match_winding[3];
         for ( size_t i = 0; i < indices_.size(); i += 3 ) {
-            const uint16* triangle = &indices_[i];
+            const uint16_t* triangle = &indices_[i];
             // Try to find edge matches to cheaply encode indices and employ
             // parallelogram prediction.
             const size_t num_matches = LruEdge ( triangle,
@@ -157,9 +157,9 @@ public:
         std::vector<int> crosses ( 3 * num_attribs );
         for ( size_t i = 0; i < indices_.size(); i += 3 ) {
             // Compute face cross products.
-            const uint16 i0 = indices_[i + 0];
-            const uint16 i1 = indices_[i + 1];
-            const uint16 i2 = indices_[i + 2];
+            const uint16_t i0 = indices_[i + 0];
+            const uint16_t i1 = indices_[i + 1];
+            const uint16_t i2 = indices_[i + 2];
             int e1[3], e2[3], cross[3];
             e1[0] = attribs_[8*i1 + 0] - attribs_[8*i0 + 0];
             e1[1] = attribs_[8*i1 + 1] - attribs_[8*i0 + 1];
@@ -195,9 +195,9 @@ public:
             ny *= norm;
             nz *= norm;
 
-            const uint16 dx = ZigZag ( nx - pnx );
-            const uint16 dy = ZigZag ( ny - pny );
-            const uint16 dz = ZigZag ( nz - pnz );
+            const uint16_t dx = ZigZag ( nx - pnx );
+            const uint16_t dy = ZigZag ( ny - pny );
+            const uint16_t dz = ZigZag ( nz - pnz );
 
             deltas_[5*num_attribs + idx] = dx;
             deltas_[6*num_attribs + idx] = dy;
@@ -205,21 +205,21 @@ public:
         }
         for ( size_t triangle_start_index = 0;
                 triangle_start_index < indices_.size(); triangle_start_index += 3 ) {
-            const uint16 i0 = indices_[triangle_start_index + 0];
-            const uint16 i1 = indices_[triangle_start_index + 1];
-            const uint16 i2 = indices_[triangle_start_index + 2];
+            const uint16_t i0 = indices_[triangle_start_index + 0];
+            const uint16_t i1 = indices_[triangle_start_index + 1];
+            const uint16_t i2 = indices_[triangle_start_index + 2];
             // To force simple compression, set |max_backref| to 0 here
             // and in loader.js.
             // |max_backref| should be configurable and communicated.
-            const uint16 max_backref = triangle_start_index < kMaxLruSize ?
+            const uint16_t max_backref = triangle_start_index < kMaxLruSize ?
                                        triangle_start_index : kMaxLruSize;
             // Scan the index list for matching edges.
-            uint16 backref = 0;
+            uint16_t backref = 0;
             for ( ; backref < max_backref; backref += 3 ) {
                 const size_t candidate_start_index = triangle_start_index - backref;
-                const uint16 j0 = indices_[candidate_start_index + 0];
-                const uint16 j1 = indices_[candidate_start_index + 1];
-                const uint16 j2 = indices_[candidate_start_index + 2];
+                const uint16_t j0 = indices_[candidate_start_index + 0];
+                const uint16_t j1 = indices_[candidate_start_index + 1];
+                const uint16_t j2 = indices_[candidate_start_index + 2];
                 // Compare input and candidate triangle edges in a
                 // winding-sensitive order. Matching edges must reference
                 // vertices in opposite order, and the first check sees if the
@@ -309,9 +309,9 @@ private:
     // attribute order, we use the last referenced attribute as the
     // predictor.
     void SimplePredictor ( size_t max_backref, size_t triangle_start_index ) {
-        const uint16 i0 = indices_[triangle_start_index + 0];
-        const uint16 i1 = indices_[triangle_start_index + 1];
-        const uint16 i2 = indices_[triangle_start_index + 2];
+        const uint16_t i0 = indices_[triangle_start_index + 0];
+        const uint16_t i1 = indices_[triangle_start_index + 1];
+        const uint16_t i2 = indices_[triangle_start_index + 2];
         if ( HighWaterMark ( i0, max_backref ) ) {
             // Would it be faster to do the dumb delta, in this case?
             EncodeDeltaAttrib ( i0, last_attrib_ );
@@ -335,33 +335,33 @@ private:
         }
     }
 
-    void EncodeDeltaAttrib ( size_t index, const uint16* predicted ) {
+    void EncodeDeltaAttrib ( size_t index, const uint16_t* predicted ) {
         const size_t num_attribs = attribs_.size() / 8;
         for ( size_t i = 0; i < 5; ++i ) {
             const int delta = attribs_[8*index + i] - predicted[i];
-            const uint16 code = ZigZag ( delta );
+            const uint16_t code = ZigZag ( delta );
             deltas_[num_attribs*i + index] = code;
         }
         UpdateLastAttrib ( index );
     }
 
-    void ParallelogramPredictor ( uint16 backref_edge,
+    void ParallelogramPredictor ( uint16_t backref_edge,
                                   size_t backref_vert,
                                   size_t triangle_start_index ) {
         codes_.push_back ( backref_edge ); // Encoding matching edge.
-        const uint16 i2 = indices_[triangle_start_index + 2];
+        const uint16_t i2 = indices_[triangle_start_index + 2];
         if ( HighWaterMark ( i2 ) ) { // Encode third vertex.
             // Parallelogram prediction for the new vertex.
-            const uint16 i0 = indices_[triangle_start_index + 0];
-            const uint16 i1 = indices_[triangle_start_index + 1];
+            const uint16_t i0 = indices_[triangle_start_index + 0];
+            const uint16_t i1 = indices_[triangle_start_index + 1];
             const size_t num_attribs = attribs_.size() / 8;
             for ( size_t j = 0; j < 5; ++j ) {
-                const uint16 orig = attribs_[8*i2 + j];
+                const uint16_t orig = attribs_[8*i2 + j];
                 int delta = attribs_[8*i0 + j];
                 delta += attribs_[8*i1 + j];
                 delta -= attribs_[8*backref_vert + j];
                 last_attrib_[j] = orig;
-                const uint16 code = ZigZag ( orig - delta );
+                const uint16_t code = ZigZag ( orig - delta );
                 deltas_[num_attribs*j + i2] = code;
             }
         }
@@ -369,7 +369,7 @@ private:
 
     // Returns |true| if |index_high_water_mark_| is incremented, otherwise
     // returns |false| and automatically updates |last_attrib_|.
-    bool HighWaterMark ( uint16 index, uint16 start_code = 0 ) {
+    bool HighWaterMark ( uint16_t index, uint16_t start_code = 0 ) {
         codes_.push_back ( index_high_water_mark_ - index + start_code );
         if ( index == index_high_water_mark_ ) {
             ++index_high_water_mark_;
@@ -380,7 +380,7 @@ private:
         return false;
     }
 
-    void UpdateLastAttrib ( uint16 index ) {
+    void UpdateLastAttrib ( uint16_t index ) {
         for ( size_t i = 0; i < 8; ++i ) {
             last_attrib_[i] = attribs_[8*index + i];
         }
@@ -389,12 +389,12 @@ private:
     // Find edge matches of |triangle| referenced in |edge_lru_|
     // |match_indices| stores where the matches occur in |edge_lru_|
     // |match_winding| stores where the matches occur in |triangle|
-    size_t LruEdge ( const uint16* triangle,
+    size_t LruEdge ( const uint16_t* triangle,
                      size_t* match_indices,
                      size_t* match_winding ) {
-        const uint16 i0 = triangle[0];
-        const uint16 i1 = triangle[1];
-        const uint16 i2 = triangle[2];
+        const uint16_t i0 = triangle[0];
+        const uint16_t i1 = triangle[1];
+        const uint16_t i2 = triangle[2];
         // The primary thing is to find the first matching edge, if
         // any. If we assume that our mesh is mostly manifold, then each
         // edge is shared by at most two triangles (with the indices in
@@ -413,7 +413,7 @@ private:
             // actually also need to run in the decompressor, we must
             // optimize it.
             const int winding = edge_index % 3;
-            uint16 e0, e1;
+            uint16_t e0, e1;
             switch ( winding ) {
             case 0:
                 e0 = indices_[edge_index + 1];
@@ -458,7 +458,7 @@ private:
 
     // If no edges were found in |triangle|, then simply push the edges
     // onto |edge_lru_|.
-    void LruEdgeZero ( const uint16* triangle ) {
+    void LruEdgeZero ( const uint16_t* triangle ) {
         // Shift |edge_lru_| by three elements. Note that the |edge_lru_|
         // array has at least three extra elements to make this simple.
         lru_size_ += 3;
@@ -528,11 +528,11 @@ private:
     // a recently-seen edge.
     OptimizedIndexList codes_;
     // |index_high_water_mark_| is used as it is in |CompressIndicesToUtf8|.
-    uint16 index_high_water_mark_;
+    uint16_t index_high_water_mark_;
     // |last_attrib_referenced_| is the index of the last referenced
     // attribute. This is used to delta encode attributes when no edge match
     // is found.
-    uint16 last_attrib_[8];
+    uint16_t last_attrib_[8];
     size_t lru_size_;
     // |edge_lru_| contains the LRU lits of edge references. It stores
     // indices to the input |indices_|. By convention, an edge points to

@@ -26,11 +26,8 @@
 #include <string>
 #include <vector>
 
-// TODO: consider using C99 spellings.
-typedef unsigned char uint8;
-typedef unsigned short uint16;
-typedef short int16;
-typedef unsigned int uint32;
+#define PutChar putc
+#define PRIuS "%zu"
 
 #ifndef isfinite
 # define isfinite _finite
@@ -38,8 +35,8 @@ typedef unsigned int uint32;
 
 typedef std::vector<float> AttribList;
 typedef std::vector<int> IndexList;
-typedef std::vector<uint16> QuantizedAttribList;
-typedef std::vector<uint16> OptimizedIndexList;
+typedef std::vector<uint16_t> QuantizedAttribList;
+typedef std::vector<uint16_t> OptimizedIndexList;
 
 // TODO: these data structures ought to go elsewhere.
 struct DrawMesh {
@@ -131,8 +128,8 @@ static inline void ToLowerInplace ( std::string* in ) {
 
 // Jenkin's One-at-a-time Hash. Not the best, but simple and
 // portable.
-uint32 SimpleHash ( char *key, size_t len, uint32 seed = 0 ) {
-    uint32 hash = seed;
+uint32_t SimpleHash ( char *key, size_t len, uint32_t seed = 0 ) {
+    uint32_t hash = seed;
     for ( size_t i = 0; i < len; ++i ) {
         hash += static_cast<unsigned char> ( key[i] );
         hash += ( hash << 10 );
@@ -144,19 +141,19 @@ uint32 SimpleHash ( char *key, size_t len, uint32 seed = 0 ) {
     return hash;
 }
 
-void ToHex ( uint32 w, char out[9] ) {
+void ToHex ( uint32_t w, char out[9] ) {
     const char kOffset0 = '0';
     const char kOffset10 = 'a' - 10;
     out[8] = '\0';
     for ( size_t i = 8; i > 0; ) {
-        uint32 bits = w & 0xF;
+        uint32_t bits = w & 0xF;
         out[--i] = bits + ( ( bits < 10 ) ? kOffset0 : kOffset10 );
         w >>= 4;
     }
 }
 
-uint16 Quantize ( float f, float in_min, float in_scale, uint16 out_max ) {
-    return static_cast<uint16> ( out_max * ( ( f-in_min ) / in_scale ) );
+uint16_t Quantize ( float f, float in_min, float in_scale, uint16_t out_max ) {
+    return static_cast<uint16_t> ( out_max * ( ( f-in_min ) / in_scale ) );
 }
 
 #ifndef CHECK

@@ -124,14 +124,14 @@ public:
     }
 
     virtual void Put ( char c ) {
-        histo_[static_cast<uint8> ( c )]++;
+        histo_[static_cast<uint8_t> ( c )]++;
         sink_->Put ( c );
     }
 
     virtual size_t PutN ( const char* data, size_t len ) {
         const char* const end = data + len;
         for ( const char* iter = data; iter != end; ++iter ) {
-            histo_[static_cast<uint8> ( *iter )]++;
+            histo_[static_cast<uint8_t> ( *iter )]++;
         }
         return sink_->PutN ( data, len );
     }

@@ -128,7 +128,7 @@ public:
     }
 private:
     static const int kUnknownIndex = -1;
-    static const uint16 kMaxOutputIndex = 0xD800;
+    static const uint16_t kMaxOutputIndex = 0xD800;
     static const size_t kCacheSize = 32;  // Does larger improve compression?
 
     struct VertexData {
@@ -176,7 +176,7 @@ private:
         FaceList faces;
         unsigned int cache_tag;  // kCacheSize means not in cache.
         float score;
-        uint16 output_index;
+        uint16_t output_index;
     };
 
     int FindBestTriangle ( const int* indices,
@@ -268,7 +268,7 @@ private:
     const QuantizedAttribList& attribs_;
     std::vector<VertexData> per_vertex_;
     int cache_[kCacheSize + 1];
-    uint16 next_unused_index_;
+    uint16_t next_unused_index_;
 };
 
 #endif  // WEBGL_LOADER_OPTIMIZE_H_

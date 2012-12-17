@@ -104,7 +104,7 @@ int main ( int argc, const char* argv[] ) {
             index_length.push_back ( num_indices / 3 );
             offset += num_attribs + num_indices;
         }
-        const uint32 hash = SimpleHash ( &utf8[0], utf8.size() );
+        const uint32_t hash = SimpleHash ( &utf8[0], utf8.size() );
         char buf[9] = { '\0' };
         ToHex ( hash, buf );
         // TODO: this needs to handle paths.

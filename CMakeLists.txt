@@ -8,8 +8,8 @@ endif()
 set (CMAKE_BUILD_TYPE Debug)
 set (CMAKE_VERBOSE_MAKEFILE on)
 
-set (CMAKE_CXX_FLAGS_DEBUG "-O2 -g")
-set (CMAKE_CXX_FLAGS_RELEASE "-O2")
+set (CMAKE_CXX_FLAGS_DEBUG "-std=c++0x -O2 -g")
+set (CMAKE_CXX_FLAGS_RELEASE "-std=c++0x -O2")
 
 include_directories (
 	${PROJECT_SOURCE_DIR}/include

@@ -22,18 +22,18 @@
 
 namespace webgl_loader {
 
-const uint8 kUtf8MoreBytesPrefix = 0x80;
-const uint8 kUtf8TwoBytePrefix = 0xC0;
-const uint8 kUtf8ThreeBytePrefix = 0xE0;
+const uint8_t kUtf8MoreBytesPrefix = 0x80;
+const uint8_t kUtf8TwoBytePrefix = 0xC0;
+const uint8_t kUtf8ThreeBytePrefix = 0xE0;
 
-const uint16 kUtf8TwoByteLimit = 0x0800;
-const uint16 kUtf8SurrogatePairStart = 0xD800;
-const uint16 kUtf8SurrogatePairNum = 0x0800;
-const uint16 kUtf8EncodableEnd = 0x10000 - kUtf8SurrogatePairNum;
+const uint16_t kUtf8TwoByteLimit = 0x0800;
+const uint16_t kUtf8SurrogatePairStart = 0xD800;
+const uint16_t kUtf8SurrogatePairNum = 0x0800;
+const uint16_t kUtf8EncodableEnd = 0x10000 - kUtf8SurrogatePairNum;
 
-const uint16 kUtf8MoreBytesMask = 0x3F;
+const uint16_t kUtf8MoreBytesMask = 0x3F;
 
-bool Uint16ToUtf8 ( uint16 word, ByteSinkInterface* sink ) {
+bool Uint16ToUtf8 ( uint16_t word, ByteSinkInterface* sink ) {
     if ( word < 0x80 ) {
         sink->Put ( static_cast<char> ( word ) );
     } else if ( word < kUtf8TwoByteLimit ) {
