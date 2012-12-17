@@ -1,5 +1,5 @@
 Forked from: [code.google.com](https://code.google.com/p/webgl-loader/)
-License: Apache 2.0
+License: GPLv3
 
 Live demos:
 
@@ -14,8 +14,6 @@ This library includes:
 2. a simple [vertex cache optimizer](http://home.comcast.net/~tom_forsyth/papers/fast_vert_cache_opt.html) and 
 [analyzer](https://code.google.com/p/webgl-loader/wiki/FifoCacheAnalysis),
 3. a [UTF-8](https://code.google.com/p/webgl-loader/wiki/UtfEight) based binary encoder,
-
-Utils are taken from [nothings.org](http://nothings.org/stb/)
 
 [The SIGGRAPH 2011 talk slides](https://docs.google.com/present/view?id=d4wf4t2_251g4kjtwgs).
 
