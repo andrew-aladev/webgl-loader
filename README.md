@@ -1,5 +1,5 @@
 Forked from: [code.google.com](https://code.google.com/p/webgl-loader/)
-License: GPLv3
+License: LGPLv3 library and GPLv3 utils
 
 Live demos:
 
