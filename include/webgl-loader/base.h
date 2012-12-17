@@ -166,13 +166,6 @@ uint16 Quantize ( float f, float in_min, float in_scale, uint16 out_max ) {
     return static_cast<uint16> ( out_max * ( ( f-in_min ) / in_scale ) );
 }
 
-// TODO: Visual Studio calls this someting different.
-#ifdef putc_unlocked
-# define PutChar putc_unlocked
-#else
-# define PutChar putc
-#endif  // putc_unlocked
-
 #ifndef CHECK
 # define CHECK(PRED) if (!(PRED)) {                                     \
     fprintf(stderr, "%s:%d CHECK failed: ", __FILE__, __LINE__);        \
