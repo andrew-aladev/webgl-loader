@@ -14,8 +14,8 @@
 //   Google Inc
 //   andrew.aladjev@gmail.com
 
-#ifndef WEBGL_LOADER_MESH_H_
-#define WEBGL_LOADER_MESH_H_
+#ifndef WEBGL_LOADER_MESH_H
+#define WEBGL_LOADER_MESH_H
 
 #include <float.h>
 #include <limits.h>
@@ -711,4 +711,4 @@ private:
     unsigned int current_group_line_;
 };
 
-#endif  // WEBGL_LOADER_MESH_H_
+#endif  // WEBGL_LOADER_MESH_H

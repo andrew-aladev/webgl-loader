@@ -1,12 +1,12 @@
 // This file is part of WebGL Loader.
-// 
+//
 // WebGL Loader is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License
 // as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-// 
+//
 // WebGL Loader is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
 // without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 // See the GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License along with WebGL Loader.
 // If not, see <http://www.gnu.org/licenses/>.
 //
@@ -27,16 +27,16 @@ void DumpAllCodepoints ( FILE* fp ) {
         PutChar ( word, fp );
     }
     for ( size_t word = 0x80; word != 0x800; ++word ) {
-        PutChar ( kUtf8TwoBytePrefix + static_cast<char> ( word >> 6 ), fp );
-        PutChar ( kUtf8MoreBytesPrefix +
-                  static_cast<char> ( word & kUtf8MoreBytesMask ), fp );
+        PutChar ( K_UTF8_TWO_BYTE_PREFIX + static_cast<char> ( word >> 6 ), fp );
+        PutChar ( K_UTF8_MORE_BYTES_PREFIX +
+                  static_cast<char> ( word & K_UTF8_MORE_BYTES_MASK ), fp );
     }
     for ( size_t word = 0x800; word != 0x10000; ++word ) {
-        PutChar ( kUtf8ThreeBytePrefix + static_cast<char> ( word >> 12 ), fp );
-        PutChar ( kUtf8MoreBytesPrefix +
-                  static_cast<char> ( ( word >> 6 ) & kUtf8MoreBytesMask ), fp );
-        PutChar ( kUtf8MoreBytesPrefix +
-                  static_cast<char> ( word & kUtf8MoreBytesMask ), fp );
+        PutChar ( K_UTF8_THREE_BYTE_PREFIX + static_cast<char> ( word >> 12 ), fp );
+        PutChar ( K_UTF8_MORE_BYTES_PREFIX +
+                  static_cast<char> ( ( word >> 6 ) & K_UTF8_MORE_BYTES_MASK ), fp );
+        PutChar ( K_UTF8_MORE_BYTES_PREFIX +
+                  static_cast<char> ( word & K_UTF8_MORE_BYTES_MASK ), fp );
     }
 }
 

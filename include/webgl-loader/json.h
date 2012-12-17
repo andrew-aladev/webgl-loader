@@ -14,8 +14,8 @@
 //   Google Inc
 //   andrew.aladjev@gmail.com
 
-#ifndef WEBGL_LOADER_JSON_H_
-#define WEBGL_LOADER_JSON_H_
+#ifndef WEBGL_LOADER_JSON_H
+#define WEBGL_LOADER_JSON_H
 
 #include <float.h>
 #include <stdio.h>
@@ -217,4 +217,4 @@ private:
 
 }  // namespace webgl_loader
 
-#endif  // WEBGL_LOADER_JSON_H_
+#endif  // WEBGL_LOADER_JSON_H

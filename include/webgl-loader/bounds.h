@@ -14,8 +14,8 @@
 //   Google Inc
 //   andrew.aladjev@gmail.com
 
-#ifndef WEBGL_LOADER_BOUNDS_H_
-#define WEBGL_LOADER_BOUNDS_H_
+#ifndef WEBGL_LOADER_BOUNDS_H
+#define WEBGL_LOADER_BOUNDS_H
 
 #include <stdio.h>
 
@@ -31,8 +31,8 @@ struct Bounds {
 
     void Clear() {
         for ( size_t i = 0; i < 8; ++i ) {
-            mins[i] = FLT_MAX;
-            maxes[i] = -FLT_MAX;
+            mins[i] = std::numeric_limits<float>::max();
+            maxes[i] = -std::numeric_limits<float>::max();
         }
     }
 
@@ -122,4 +122,4 @@ struct BoundsParams {
 
 }  // namespace webgl_loader
 
-#endif  // WEBGL_LOADER_BOUNDS_H_
+#endif  // WEBGL_LOADER_BOUNDS_H

@@ -14,14 +14,11 @@
 //   Google Inc
 //   andrew.aladjev@gmail.com
 
-#ifndef WEBGL_LOADER_BASE_H_
-#define WEBGL_LOADER_BASE_H_
+#ifndef WEBGL_LOADER_BASE_H
+#define WEBGL_LOADER_BASE_H
 
-#include <cstdint>
-#include <cfloat>
 #include <cctype>
-#include <cstdio>
-#include <cstdlib>
+#include <limits>
 #include <cassert>
 #include <cstring>
 #include <string>
@@ -157,4 +154,4 @@ uint16_t Quantize ( float f, float in_min, float in_scale, uint16_t out_max ) {
     return static_cast<uint16_t> ( out_max * ( ( f-in_min ) / in_scale ) );
 }
 
-#endif  // WEBGL_LOADER_BASE_H_
+#endif  // WEBGL_LOADER_BASE_H

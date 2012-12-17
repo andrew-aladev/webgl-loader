@@ -15,8 +15,8 @@
 //   andrew.aladjev@gmail.com
 
 
-#ifndef WEBGL_LOADER_COMPRESS_H_
-#define WEBGL_LOADER_COMPRESS_H_
+#ifndef WEBGL_LOADER_COMPRESS_H
+#define WEBGL_LOADER_COMPRESS_H
 
 #include <math.h>
 
@@ -543,4 +543,4 @@ private:
 
 }  // namespace webgl_loader
 
-#endif  // WEBGL_LOADER_COMPRESS_H_
+#endif  // WEBGL_LOADER_COMPRESS_H

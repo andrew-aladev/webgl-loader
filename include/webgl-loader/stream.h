@@ -14,8 +14,8 @@
 //   Google Inc
 //   andrew.aladjev@gmail.com
 
-#ifndef WEBGL_LOADER_STREAM_H_
-#define WEBGL_LOADER_STREAM_H_
+#ifndef WEBGL_LOADER_STREAM_H
+#define WEBGL_LOADER_STREAM_H
 
 #include <stdio.h>
 #include <string>
@@ -273,4 +273,4 @@ private:
 
 }  // namespace webgl_loader
 
-#endif  // WEBGL_LOADER_STREAM_H_
+#endif  // WEBGL_LOADER_STREAM_H
