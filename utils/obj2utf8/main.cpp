@@ -11,7 +11,7 @@
 // If not, see <http://www.gnu.org/licenses/>.
 //
 // Copyright
-//   Google Inc
+//   Google Inc (wonchun@gmail.com)
 //   andrew.aladjev@gmail.com
 
 #include <webgl-loader/bounds.hpp>
@@ -51,16 +51,16 @@ int main ( int argc, const char* argv[] ) {
 
     // Pass 1: compute bounds.
     Bounds bounds;
-    bounds.Clear();
+    bounds.clear();
     for ( MaterialBatches::const_iterator iter = batches.begin();
             iter != batches.end(); ++iter ) {
         const DrawBatch& draw_batch = iter->second;
-        bounds.Enclose ( draw_batch.draw_mesh().attribs );
+        bounds.enclose ( draw_batch.draw_mesh().attribs );
     }
     BoundsParams bounds_params =
-        BoundsParams::FromBounds ( bounds );
+        BoundsParams::from_bounds ( bounds );
     fputs ( "  \"decodeParams\": ", json_out );
-    bounds_params.DumpJson ( json_out );
+    bounds_params.dump_json ( json_out );
     fputs ( ", \"urls\": {\n", json_out );
     // Pass 2: quantize, optimize, compress, report.
     FILE* utf8_out_fp = fopen ( argv[2], "wb" );
@@ -76,7 +76,7 @@ int main ( int argc, const char* argv[] ) {
             continue;
         }
         QuantizedAttribList quantized_attribs;
-        AttribsToQuantizedAttribs ( draw_mesh.attribs, bounds_params,
+        attribs_to_quantized_attribs ( draw_mesh.attribs, bounds_params,
                 &quantized_attribs );
         VertexOptimizer vertex_optimizer ( quantized_attribs );
         const std::vector<GroupStart>& group_starts = iter->second.group_starts();
@@ -103,9 +103,9 @@ int main ( int argc, const char* argv[] ) {
             const size_t num_indices = webgl_meshes[i].indices.size();
             assert ( num_attribs % 8 == 0 );
             assert ( num_indices % 3 == 0 );
-            CompressQuantizedAttribsToUtf8 ( webgl_meshes[i].attribs,
+            compress_quantized_attribs_to_utf8 ( webgl_meshes[i].attribs,
                     &utf8_sink );
-            CompressIndicesToUtf8 ( webgl_meshes[i].indices, &utf8_sink );
+            compress_indices_to_utf8 ( webgl_meshes[i].indices, &utf8_sink );
             material.push_back ( iter->first );
             attrib_start.push_back ( offset );
             attrib_length.push_back ( num_attribs / 8 );

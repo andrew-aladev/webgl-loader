@@ -11,7 +11,7 @@
 // If not, see <http://www.gnu.org/licenses/>.
 //
 // Copyright
-//   Google Inc
+//   Google Inc (wonchun@gmail.com)
 //   andrew.aladjev@gmail.com
 
 #include <cstring>

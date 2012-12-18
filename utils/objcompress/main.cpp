@@ -11,7 +11,7 @@
 // If not, see <http://www.gnu.org/licenses/>.
 //
 // Copyright
-//   Google Inc
+//   Google Inc (wonchun@gmail.com)
 //   andrew.aladjev@gmail.com
 
 #include <webgl-loader/bounds.hpp>
@@ -45,16 +45,16 @@ int main ( int argc, const char* argv[] ) {
 
     // Pass 1: compute bounds.
     Bounds bounds;
-    bounds.Clear();
+    bounds.clear();
     for ( MaterialBatches::const_iterator iter = batches.begin();
             iter != batches.end(); ++iter ) {
         const DrawBatch& draw_batch = iter->second;
-        bounds.Enclose ( draw_batch.draw_mesh().attribs );
+        bounds.enclose ( draw_batch.draw_mesh().attribs );
     }
     BoundsParams bounds_params =
-        BoundsParams::FromBounds ( bounds );
+        BoundsParams::from_bounds ( bounds );
     printf ( "  decodeParams: " );
-    bounds_params.DumpJson();
+    bounds_params.dump_json();
 
     puts ( "  urls: {" );
     std::vector<char> utf8;
@@ -68,7 +68,7 @@ int main ( int argc, const char* argv[] ) {
         if ( draw_mesh.indices.empty() ) continue;
 
         QuantizedAttribList quantized_attribs;
-        AttribsToQuantizedAttribs ( draw_mesh.attribs, bounds_params,
+        attribs_to_quantized_attribs ( draw_mesh.attribs, bounds_params,
                 &quantized_attribs );
         VertexOptimizer vertex_optimizer ( quantized_attribs );
         const std::vector<GroupStart>& group_starts = iter->second.group_starts();
@@ -96,9 +96,9 @@ int main ( int argc, const char* argv[] ) {
             const size_t num_indices = webgl_meshes[i].indices.size();
             const bool kBadSizes = num_attribs % 8 || num_indices % 3;
             assert ( !kBadSizes );
-            CompressQuantizedAttribsToUtf8 ( webgl_meshes[i].attribs,
+            compress_quantized_attribs_to_utf8 ( webgl_meshes[i].attribs,
                     &sink );
-            CompressIndicesToUtf8 ( webgl_meshes[i].indices, &sink );
+            compress_indices_to_utf8 ( webgl_meshes[i].indices, &sink );
             material.push_back ( iter->first );
             attrib_start.push_back ( offset );
             attrib_length.push_back ( num_attribs / 8 );
@@ -135,7 +135,7 @@ int main ( int argc, const char* argv[] ) {
                 // TODO: bbox info is better placed at the head of the file,
                 // perhaps transposed. Also, when a group gets split between
                 // batches, the bbox gets stored twice.
-                CompressAABBToUtf8 ( group_starts[group_index].bounds,
+                compress_aabb_to_utf8 ( group_starts[group_index].bounds,
                                                    bounds_params, &sink );
                 offset += 6;
                 if ( next_start < webgl_index_length ) {

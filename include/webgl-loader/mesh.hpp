@@ -1,17 +1,17 @@
 // This file is part of WebGL Loader.
-// 
-// WebGL Loader is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License
+//
+// WebGL Loader is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License
 // as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-// 
+//
 // WebGL Loader is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
 // without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-// See the GNU General Public License for more details.
-// 
-// You should have received a copy of the GNU General Public License along with WebGL Loader.
+// See the GNU Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public License along with WebGL Loader.
 // If not, see <http://www.gnu.org/licenses/>.
 //
 // Copyright
-//   Google Inc
+//   Google Inc (wonchun@gmail.com)
 //   andrew.aladjev@gmail.com
 
 #ifndef WEBGL_LOADER_MESH_H
@@ -255,7 +255,7 @@ public:
             group_start.group_line = group_line;
             group_start.min_index = std::numeric_limits<int>::max();
             group_start.max_index = std::numeric_limits<int>::min();
-            group_start.bounds.Clear();
+            group_start.bounds.clear();
             group_starts_.push_back ( group_start );
         }
         GroupStart& group = group_starts_.back();
@@ -305,7 +305,7 @@ public:
                     }
                 }
                 // TODO: is the covariance body useful for anything?
-                group.bounds.EncloseAttrib ( &draw_mesh_.attribs[new_loc] );
+                group.bounds.enclose_attrib ( &draw_mesh_.attribs[new_loc] );
             }
         }
     }

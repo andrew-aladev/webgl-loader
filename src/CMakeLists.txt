@@ -7,4 +7,6 @@ include_directories (
 add_library(
 	${PROJECT_NAME} SHARED
 	${PROJECT_SOURCE_DIR}/base.cpp
+	${PROJECT_SOURCE_DIR}/bounds.cpp
+	${PROJECT_SOURCE_DIR}/compress.cpp
 )
