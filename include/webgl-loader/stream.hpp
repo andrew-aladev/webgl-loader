@@ -28,8 +28,8 @@ namespace webgl_loader {
 // An abstract interface to allow appending bytes to various streams.
 class ByteSinkInterface {
 public:
-    virtual void Put ( char c ) = 0;
-    virtual size_t PutN ( const char* data, size_t len ) = 0;
+    virtual void put ( char c ) = 0;
+    virtual size_t put_n ( const char* data, size_t len ) = 0;
     virtual ~ByteSinkInterface() { }
 
 protected:
@@ -48,9 +48,9 @@ class NullSink : public ByteSinkInterface {
 public:
     NullSink() { }
 
-    virtual void Put ( char ) { }
+    virtual void put ( char ) { }
 
-    virtual size_t PutN ( const char*, size_t len ) {
+    virtual size_t put_n ( const char*, size_t len ) {
         return len;
     }
 };
@@ -62,11 +62,11 @@ public:
         : fp_ ( fp ) {
     }
 
-    virtual void Put ( char c ) {
+    virtual void put ( char c ) {
         putc ( c, fp_ );
     }
 
-    virtual size_t PutN ( const char* data, size_t len ) {
+    virtual size_t put_n ( const char* data, size_t len ) {
         return fwrite ( data, 1, len, fp_ );
     }
 
@@ -81,11 +81,11 @@ public:
         : vec_ ( vec ) {
     }
 
-    virtual void Put ( char c ) {
+    virtual void put ( char c ) {
         vec_->push_back ( c );
     }
 
-    virtual size_t PutN ( const char* data, size_t len ) {
+    virtual size_t put_n ( const char* data, size_t len ) {
         vec_->insert ( vec_->end(), data, data + len );
         return len;
     }
@@ -102,11 +102,11 @@ public:
         assert ( str != NULL );
     }
 
-    virtual void Put ( char c ) {
+    virtual void put ( char c ) {
         str_->push_back ( c );
     }
 
-    virtual size_t PutN ( const char* data, size_t len ) {
+    virtual size_t put_n ( const char* data, size_t len ) {
         str_->append ( data, len );
         return len;
     }
@@ -123,17 +123,17 @@ public:
         memset ( histo_, 0, sizeof ( histo_ ) );
     }
 
-    virtual void Put ( char c ) {
+    virtual void put ( char c ) {
         histo_[static_cast<uint8_t> ( c )]++;
-        sink_->Put ( c );
+        sink_->put ( c );
     }
 
-    virtual size_t PutN ( const char* data, size_t len ) {
+    virtual size_t put_n ( const char* data, size_t len ) {
         const char* const end = data + len;
         for ( const char* iter = data; iter != end; ++iter ) {
             histo_[static_cast<uint8_t> ( *iter )]++;
         }
-        return sink_->PutN ( data, len );
+        return sink_->put_n ( data, len );
     }
 
     const size_t* histo() const {

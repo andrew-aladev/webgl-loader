@@ -81,6 +81,15 @@ void compress_quantized_attribs_to_utf8 ( const QuantizedAttribList& attribs, By
     }
 }
 
+EdgeCachingCompressor::EdgeCachingCompressor ( const QuantizedAttribList& attribs, OptimizedIndexList& indices )
+    : attribs_ ( attribs ),
+      indices_ ( indices ),
+      deltas_ ( attribs.size() ),
+      index_high_water_mark_ ( 0 ),
+      lru_size_ ( 0 ) {
+    memset ( last_attrib_, 0, sizeof ( last_attrib_ ) );
+}
+
 // Work in progress. Does not remotely work.
 void EdgeCachingCompressor::compress_with_lru ( ByteSinkInterface* utf8 ) {
     size_t match_indices[3];
@@ -90,7 +99,7 @@ void EdgeCachingCompressor::compress_with_lru ( ByteSinkInterface* utf8 ) {
         // Try to find edge matches to cheaply encode indices and employ
         // parallelogram prediction.
         const size_t num_matches = lru_edge ( triangle,
-                                             match_indices, match_winding );
+                                              match_indices, match_winding );
         switch ( num_matches ) {
         case 0:
             lru_edge_zero ( triangle );
@@ -98,11 +107,11 @@ void EdgeCachingCompressor::compress_with_lru ( ByteSinkInterface* utf8 ) {
             continue;
         case 1:
             lru_edge_one ( triangle[match_winding[1]],
-                         triangle[match_winding[2]], match_indices[0] );
+                           triangle[match_winding[2]], match_indices[0] );
             break;
         case 2:
             lru_edge_two ( triangle[match_winding[2]],
-                         match_indices[0], match_indices[1] );
+                           match_indices[0], match_indices[1] );
             break;
         case 3:
             lru_edge_three ( match_indices[0], match_indices[1], match_indices[2] );
@@ -255,7 +264,7 @@ void EdgeCachingCompressor::compress ( ByteSinkInterface* utf8 ) {
     }
 }
 
-void EdgeCachingCompressor::dump_debug ( FILE* fp) {
+void EdgeCachingCompressor::dump_debug ( FILE* fp ) {
     for ( size_t i = 0; i < lru_size_; ++i ) {
         fprintf ( fp, PRIuS ": %d\n", i, edge_lru_[i] );
     }
@@ -333,7 +342,7 @@ void EdgeCachingCompressor::parallelogram_predictor ( uint16_t backref_edge,
 
 // Returns |true| if |index_high_water_mark_| is incremented, otherwise
 // returns |false| and automatically updates |last_attrib_|.
-bool EdgeCachingCompressor::highwater_mark ( uint16_t index, uint16_t start_code) {
+bool EdgeCachingCompressor::highwater_mark ( uint16_t index, uint16_t start_code ) {
     codes_.push_back ( index_high_water_mark_ - index + start_code );
     if ( index == index_high_water_mark_ ) {
         ++index_high_water_mark_;
@@ -437,7 +446,7 @@ void EdgeCachingCompressor::lru_edge_one ( size_t i0, size_t i1, size_t match_in
     assert ( match_index < lru_size_ );
     // Shift |edge_lru_| by one element, starting with |match_index| + 1.
     memmove ( edge_lru_ + match_index + 2, edge_lru_ + match_index + 1,
-                ( lru_size_ - match_index ) * sizeof ( int32_t ) );
+              ( lru_size_ - match_index ) * sizeof ( int32_t ) );
     // Shift |edge_lru_| by two elements until reaching |match_index|.
     memmove ( edge_lru_ + 2, edge_lru_, match_index * sizeof ( int32_t ) );
     edge_lru_[0] = i0;
@@ -456,8 +465,8 @@ void EdgeCachingCompressor::lru_edge_two ( int32_t i0, size_t match_index0, size
 
 // All edges were found, so just remove them from |edge_lru_|.
 void EdgeCachingCompressor::lru_edge_three ( size_t match_index0,
-                    size_t match_index1,
-                    size_t match_index2 ) {
+        size_t match_index1,
+        size_t match_index2 ) {
     const size_t shift_two = match_index1 - 1;
     for ( size_t i = match_index0; i < shift_two; ++i ) {
         edge_lru_[i] = edge_lru_[i + 1];

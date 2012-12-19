@@ -74,15 +74,7 @@ private:
     int32_t edge_lru_[K_MAX_LRU_SIZE + 3];
 
 public:
-    EdgeCachingCompressor ( const QuantizedAttribList& attribs,
-                            OptimizedIndexList& indices )
-        : attribs_ ( attribs ),
-          indices_ ( indices ),
-          deltas_ ( attribs.size() ),
-          index_high_water_mark_ ( 0 ),
-          lru_size_ ( 0 ) {
-        memset ( last_attrib_, 0, sizeof ( last_attrib_ ) );
-    }
+    EdgeCachingCompressor ( const QuantizedAttribList& attribs, OptimizedIndexList& indices );
 
     void compress_with_lru ( ByteSinkInterface* utf8 );
     void compress ( ByteSinkInterface* utf8 );

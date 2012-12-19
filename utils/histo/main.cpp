@@ -31,7 +31,7 @@ void PrintByteHistogram ( FILE* fp ) {
 
     while ( kNoError == input.Refill() ) {
         const size_t count = input.end() - input.cursor;
-        histo_sink.PutN ( input.cursor, count );
+        histo_sink.put_n ( input.cursor, count );
         input.cursor += count;
     }
 

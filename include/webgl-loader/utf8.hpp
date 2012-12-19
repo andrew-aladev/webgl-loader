@@ -35,10 +35,10 @@ const uint16_t K_UTF8_MORE_BYTES_MASK = 0x3F;
 
 bool Uint16ToUtf8 ( uint16_t word, ByteSinkInterface* sink ) {
     if ( word < 0x80 ) {
-        sink->Put ( static_cast<char> ( word ) );
+        sink->put ( static_cast<char> ( word ) );
     } else if ( word < K_UTF8_TWO_BYTE_LIMIT ) {
-        sink->Put ( static_cast<char> ( K_UTF8_TWO_BYTE_PREFIX + ( word >> 6 ) ) );
-        sink->Put ( static_cast<char> ( K_UTF8_MORE_BYTES_PREFIX +
+        sink->put ( static_cast<char> ( K_UTF8_TWO_BYTE_PREFIX + ( word >> 6 ) ) );
+        sink->put ( static_cast<char> ( K_UTF8_MORE_BYTES_PREFIX +
                                         ( word & K_UTF8_MORE_BYTES_MASK ) ) );
     } else if ( word < K_UTF8_ENCODABLE_END ) {
         // We can only encode 65535 - 2048 values because of illegal UTF-8
@@ -47,10 +47,10 @@ bool Uint16ToUtf8 ( uint16_t word, ByteSinkInterface* sink ) {
             // Shift the result to avoid the surrogate pair range.
             word += K_UTF8_SURROGATE_PAIR_NUM;
         }
-        sink->Put ( static_cast<char> ( K_UTF8_THREE_BYTE_PREFIX + ( word >> 12 ) ) );
-        sink->Put ( static_cast<char> ( K_UTF8_MORE_BYTES_PREFIX +
+        sink->put ( static_cast<char> ( K_UTF8_THREE_BYTE_PREFIX + ( word >> 12 ) ) );
+        sink->put ( static_cast<char> ( K_UTF8_MORE_BYTES_PREFIX +
                                         ( ( word >> 6 ) & K_UTF8_MORE_BYTES_MASK ) ) );
-        sink->Put ( static_cast<char> ( K_UTF8_MORE_BYTES_PREFIX +
+        sink->put ( static_cast<char> ( K_UTF8_MORE_BYTES_PREFIX +
                                         ( word & K_UTF8_MORE_BYTES_MASK ) ) );
     } else {
         return false;
