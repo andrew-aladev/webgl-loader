@@ -43,10 +43,10 @@ void compress_aabb_to_utf8 ( const Bounds& bounds, const BoundsParams& total_bou
         maxes[i] = Quantize ( bounds.maxes[i], total_min, total_scale, maxPosition );
     }
     for ( int32_t i = 0; i < 3; ++i ) {
-        Uint16ToUtf8 ( mins[i], utf8 );
+        uint16_to_utf8 ( mins[i], utf8 );
     }
     for ( int32_t i = 0; i < 3; ++i ) {
-        Uint16ToUtf8 ( maxes[i] - mins[i], utf8 );
+        uint16_to_utf8 ( maxes[i] - mins[i], utf8 );
     }
 }
 
@@ -61,7 +61,7 @@ void compress_indices_to_utf8 ( const OptimizedIndexList& list, ByteSinkInterfac
         const int32_t index = list[i];
         assert ( index >= 0 );
         assert ( index <= index_high_water_mark );
-        assert ( Uint16ToUtf8 ( index_high_water_mark - index, utf8 ) );
+        assert ( uint16_to_utf8 ( index_high_water_mark - index, utf8 ) );
         if ( index == index_high_water_mark ) {
             ++index_high_water_mark;
         }
@@ -76,7 +76,7 @@ void compress_quantized_attribs_to_utf8 ( const QuantizedAttribList& attribs, By
             const uint16_t word = attribs[j];
             const uint16_t za = zig_zag ( static_cast<int16_t> ( word - prev ) );
             prev = word;
-            assert ( Uint16ToUtf8 ( za, utf8 ) );
+            assert ( uint16_to_utf8 ( za, utf8 ) );
         }
     }
 }
@@ -254,13 +254,13 @@ void EdgeCachingCompressor::compress ( ByteSinkInterface* utf8 ) {
     }
     // Emit as UTF-8.
     for ( size_t i = 0; i < deltas_.size(); ++i ) {
-        if ( !Uint16ToUtf8 ( deltas_[i], utf8 ) ) {
+        if ( !uint16_to_utf8 ( deltas_[i], utf8 ) ) {
             // TODO: bounds-dependent texcoords are still busted :(
-            Uint16ToUtf8 ( 0, utf8 );
+            uint16_to_utf8 ( 0, utf8 );
         }
     }
     for ( size_t i = 0; i < codes_.size(); ++i ) {
-        assert ( Uint16ToUtf8 ( codes_[i], utf8 ) );
+        assert ( uint16_to_utf8 ( codes_[i], utf8 ) );
     }
 }
 
@@ -271,10 +271,10 @@ void EdgeCachingCompressor::dump_debug ( FILE* fp ) {
 }
 
 const QuantizedAttribList& EdgeCachingCompressor::get_deltas() const {
-    return this->deltas_;
+    return deltas_;
 }
 const OptimizedIndexList& EdgeCachingCompressor::get_codes() const {
-    return this->codes_;
+    return codes_;
 }
 
 // The simple predictor is slightly (maybe 5%) more effective than

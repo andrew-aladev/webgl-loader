@@ -20,33 +20,33 @@ namespace webgl_loader {
 
 void Bounds::clear() {
     for ( size_t i = 0; i < 8; ++i ) {
-        this->mins[i]  =   std::numeric_limits<float>::max();
-        this->maxes[i] = - std::numeric_limits<float>::max();
+        mins[i]  =   std::numeric_limits<float>::max();
+        maxes[i] = - std::numeric_limits<float>::max();
     }
 }
 
 void Bounds::enclose_attrib ( const float* attribs ) {
     for ( size_t i = 0; i < 8; ++i ) {
         const float attrib = attribs[i];
-        if ( this->mins[i] > attrib ) {
-            this->mins[i] = attrib;
+        if ( mins[i] > attrib ) {
+            mins[i] = attrib;
         }
-        if ( this->maxes[i] < attrib ) {
-            this->maxes[i] = attrib;
+        if ( maxes[i] < attrib ) {
+            maxes[i] = attrib;
         }
     }
 }
 
 void Bounds::enclose ( const AttribList& attribs ) {
     for ( size_t i = 0; i < attribs.size(); i += 8 ) {
-        this->enclose_attrib ( &attribs[i] );
+        enclose_attrib ( &attribs[i] );
     }
 }
 
 float Bounds::uniform_scale() const {
-    const float x = this->maxes[0] - this->mins[0];
-    const float y = this->maxes[1] - this->mins[1];
-    const float z = this->maxes[2] - this->mins[2];
+    const float x = maxes[0] - mins[0];
+    const float y = maxes[1] - mins[1];
+    const float z = maxes[2] - mins[2];
 
     // TODO: max3
     if ( x > y ) {
@@ -106,12 +106,12 @@ void BoundsParams::dump_json ( FILE* out ) {
     // TODO: use JsonSink.
     fputs ( "{\n", out );
     fprintf ( out, "    \"decode_offsets\": [%d,%d,%d,%d,%d,%d,%d,%d],\n",
-              this->decode_offsets[0], this->decode_offsets[1], this->decode_offsets[2],
-              this->decode_offsets[3], this->decode_offsets[4], this->decode_offsets[5],
-              this->decode_offsets[6], this->decode_offsets[7] );
+              decode_offsets[0], decode_offsets[1], decode_offsets[2],
+              decode_offsets[3], decode_offsets[4], decode_offsets[5],
+              decode_offsets[6], decode_offsets[7] );
     fprintf ( out, "    \"decode_scales\": [%f,%f,%f,%f,%f,%f,%f,%f]\n",
-              this->decode_scales[0], this->decode_scales[1], this->decode_scales[2], this->decode_scales[3],
-              this->decode_scales[4], this->decode_scales[5], this->decode_scales[6], this->decode_scales[7] );
+              decode_scales[0], decode_scales[1], decode_scales[2], decode_scales[3],
+              decode_scales[4], decode_scales[5], decode_scales[6], decode_scales[7] );
     fputs ( "  }", out );
 }
 

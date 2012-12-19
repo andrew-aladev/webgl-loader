@@ -14,15 +14,9 @@
 //   Google Inc (wonchun@gmail.com)
 //   andrew.aladjev@gmail.com
 
-#ifndef WEBGL_LOADER_JSON_H
-#define WEBGL_LOADER_JSON_H
+#ifndef WEBGL_LOADER_JSON_HPP
+#define WEBGL_LOADER_JSON_HPP
 
-#include <cstdio>
-#include <cstring>
-
-#include <vector>
-
-#include <webgl-loader/base.hpp>
 #include <webgl-loader/stream.hpp>
 
 namespace webgl_loader {
@@ -83,4 +77,4 @@ private:
 
 }  // namespace webgl_loader
 
-#endif  // WEBGL_LOADER_JSON_H
+#endif  // WEBGL_LOADER_JSON_HPP

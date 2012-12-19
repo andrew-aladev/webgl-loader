@@ -14,14 +14,10 @@
 //   Google Inc (wonchun@gmail.com)
 //   andrew.aladjev@gmail.com
 
-#ifndef WEBGL_LOADER_COMPRESS_H
-#define WEBGL_LOADER_COMPRESS_H
+#ifndef WEBGL_LOADER_COMPRESS_HPP
+#define WEBGL_LOADER_COMPRESS_HPP
 
-#include <cmath>
-
-#include <webgl-loader/base.hpp>
 #include <webgl-loader/bounds.hpp>
-#include <webgl-loader/stream.hpp>
 #include <webgl-loader/utf8.hpp>
 
 namespace webgl_loader {
@@ -99,4 +95,4 @@ private:
 
 }  // namespace webgl_loader
 
-#endif  // WEBGL_LOADER_COMPRESS_H
+#endif  // WEBGL_LOADER_COMPRESS_HPP

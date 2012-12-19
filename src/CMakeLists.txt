@@ -10,4 +10,6 @@ add_library(
 	${PROJECT_SOURCE_DIR}/bounds.cpp
 	${PROJECT_SOURCE_DIR}/compress.cpp
 	${PROJECT_SOURCE_DIR}/json.cpp
+	${PROJECT_SOURCE_DIR}/mesh.cpp
+	${PROJECT_SOURCE_DIR}/utf8.cpp
 )

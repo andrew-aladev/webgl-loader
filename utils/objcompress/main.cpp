@@ -37,7 +37,7 @@ int main ( int argc, const char* argv[] ) {
     puts ( "  materials: {" );
     const MaterialList& materials = obj.materials();
     for ( size_t i = 0; i < materials.size(); ++i ) {
-        materials[i].DumpJson();
+        materials[i].dump_json();
     }
     puts ( "  }," );
 
@@ -128,7 +128,7 @@ int main ( int argc, const char* argv[] ) {
             size_t group_start = 0;
             while ( group_index < group_lengths.size() ) {
                 printf ( "\'%s\', ",
-                         obj.LineToGroup ( group_starts[group_index].group_line ).c_str() );
+                         obj.line_to_group ( group_starts[group_index].group_line ).c_str() );
                 const size_t group_length = group_lengths[group_index];
                 const size_t next_start = group_start + group_length;
                 const size_t webgl_index_length = webgl_meshes[i].indices.size();

@@ -41,7 +41,7 @@ int main ( int argc, const char* argv[] ) {
     fputs ( "{\n  \"materials\": {\n", json_out );
     const MaterialList& materials = obj.materials();
     for ( size_t i = 0; i < materials.size(); ++i ) {
-        materials[i].DumpJson ( json_out );
+        materials[i].dump_json ( json_out );
         const bool last = i == materials.size() - 1;
         fputs ( ",\n" + last, json_out );
     }

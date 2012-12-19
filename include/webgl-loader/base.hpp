@@ -14,9 +14,10 @@
 //   Google Inc (wonchun@gmail.com)
 //   andrew.aladjev@gmail.com
 
-#ifndef WEBGL_LOADER_BASE_H
-#define WEBGL_LOADER_BASE_H
+#ifndef WEBGL_LOADER_BASE_HPP
+#define WEBGL_LOADER_BASE_HPP
 
+#include <cmath>
 #include <cctype>
 #include <limits>
 #include <cassert>
@@ -127,4 +128,4 @@ uint16_t Quantize ( float f, float in_min, float in_scale, uint16_t out_max );
 
 } // namespace webgl_loader
 
-#endif  // WEBGL_LOADER_BASE_H
+#endif  // WEBGL_LOADER_BASE_HPP

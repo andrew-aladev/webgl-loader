@@ -14,12 +14,8 @@
 //   Google Inc (wonchun@gmail.com)
 //   andrew.aladjev@gmail.com
 
-#ifndef WEBGL_LOADER_STREAM_H
-#define WEBGL_LOADER_STREAM_H
-
-#include <cstdio>
-#include <string>
-#include <vector>
+#ifndef WEBGL_LOADER_STREAM_HPP
+#define WEBGL_LOADER_STREAM_HPP
 
 #include <webgl-loader/base.hpp>
 
@@ -273,4 +269,4 @@ private:
 
 }  // namespace webgl_loader
 
-#endif  // WEBGL_LOADER_STREAM_H
+#endif  // WEBGL_LOADER_STREAM_HPP

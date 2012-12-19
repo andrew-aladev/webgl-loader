@@ -14,8 +14,8 @@
 //   Google Inc (wonchun@gmail.com)
 //   andrew.aladjev@gmail.com
 
-#ifndef WEBGL_LOADER_BOUNDS_H
-#define WEBGL_LOADER_BOUNDS_H
+#ifndef WEBGL_LOADER_BOUNDS_HPP
+#define WEBGL_LOADER_BOUNDS_HPP
 
 #include <webgl-loader/base.hpp>
 
@@ -47,4 +47,4 @@ struct BoundsParams {
 
 } // namespace webgl_loader
 
-#endif  // WEBGL_LOADER_BOUNDS_H
+#endif  // WEBGL_LOADER_BOUNDS_HPP

@@ -65,7 +65,7 @@ public:
 
 private:
     const char* ParseIndices ( const char* line ) {
-        return obj_.ParseIndices ( line, 0, &position_index_, &texcoord_index_,
+        return obj_.parse_indices ( line, 0, &position_index_, &texcoord_index_,
                                    &normal_index_ );
     }
 

@@ -14,8 +14,8 @@
 //   Google Inc (wonchun@gmail.com)
 //   andrew.aladjev@gmail.com
 
-#ifndef WEBGL_LOADER_UTF8_H
-#define WEBGL_LOADER_UTF8_H
+#ifndef WEBGL_LOADER_UTF8_HPP
+#define WEBGL_LOADER_UTF8_HPP
 
 #include <webgl-loader/base.hpp>
 #include <webgl-loader/stream.hpp>
@@ -23,41 +23,18 @@
 namespace webgl_loader {
 
 const uint8_t K_UTF8_MORE_BYTES_PREFIX = 0x80;
-const uint8_t K_UTF8_TWO_BYTE_PREFIX = 0xC0;
+const uint8_t K_UTF8_TWO_BYTE_PREFIX   = 0xC0;
 const uint8_t K_UTF8_THREE_BYTE_PREFIX = 0xE0;
 
-const uint16_t K_UTF8_TWO_BYTE_LIMIT = 0x0800;
+const uint16_t K_UTF8_TWO_BYTE_LIMIT       = 0x0800;
 const uint16_t K_UTF8_SURROGATE_PAIR_START = 0xD800;
-const uint16_t K_UTF8_SURROGATE_PAIR_NUM = 0x0800;
-const uint16_t K_UTF8_ENCODABLE_END = 0x10000 - K_UTF8_SURROGATE_PAIR_NUM;
+const uint16_t K_UTF8_SURROGATE_PAIR_NUM   = 0x0800;
+const uint16_t K_UTF8_ENCODABLE_END        = 0x10000 - K_UTF8_SURROGATE_PAIR_NUM;
 
-const uint16_t K_UTF8_MORE_BYTES_MASK = 0x3F;
+const uint16_t K_UTF8_MORE_BYTES_MASK      = 0x3F;
 
-bool Uint16ToUtf8 ( uint16_t word, ByteSinkInterface* sink ) {
-    if ( word < 0x80 ) {
-        sink->put ( static_cast<char> ( word ) );
-    } else if ( word < K_UTF8_TWO_BYTE_LIMIT ) {
-        sink->put ( static_cast<char> ( K_UTF8_TWO_BYTE_PREFIX + ( word >> 6 ) ) );
-        sink->put ( static_cast<char> ( K_UTF8_MORE_BYTES_PREFIX +
-                                        ( word & K_UTF8_MORE_BYTES_MASK ) ) );
-    } else if ( word < K_UTF8_ENCODABLE_END ) {
-        // We can only encode 65535 - 2048 values because of illegal UTF-8
-        // characters, such as surrogate pairs in [0xD800, 0xDFFF].
-        if ( word >= K_UTF8_SURROGATE_PAIR_START ) {
-            // Shift the result to avoid the surrogate pair range.
-            word += K_UTF8_SURROGATE_PAIR_NUM;
-        }
-        sink->put ( static_cast<char> ( K_UTF8_THREE_BYTE_PREFIX + ( word >> 12 ) ) );
-        sink->put ( static_cast<char> ( K_UTF8_MORE_BYTES_PREFIX +
-                                        ( ( word >> 6 ) & K_UTF8_MORE_BYTES_MASK ) ) );
-        sink->put ( static_cast<char> ( K_UTF8_MORE_BYTES_PREFIX +
-                                        ( word & K_UTF8_MORE_BYTES_MASK ) ) );
-    } else {
-        return false;
-    }
-    return true;
-}
+bool uint16_to_utf8 ( uint16_t word, ByteSinkInterface* sink );
 
 }  // namespace webgl_loader
 
-#endif  // WEBGL_LOADER_UTF8_H
+#endif  // WEBGL_LOADER_UTF8_HPP

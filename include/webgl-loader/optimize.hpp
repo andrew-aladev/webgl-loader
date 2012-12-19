@@ -14,12 +14,8 @@
 //   Google Inc (wonchun@gmail.com)
 //   andrew.aladjev@gmail.com
 
-#ifndef WEBGL_LOADER_OPTIMIZE_H
-#define WEBGL_LOADER_OPTIMIZE_H
-
-#include <cmath>
-#include <cstdlib>
-#include <cstring>
+#ifndef WEBGL_LOADER_OPTIMIZE_HPP
+#define WEBGL_LOADER_OPTIMIZE_HPP
 
 #include <webgl-loader/base.hpp>
 
@@ -275,4 +271,4 @@ private:
 
 } // namespace webgl_loader
 
-#endif  // WEBGL_LOADER_OPTIMIZE_H
+#endif  // WEBGL_LOADER_OPTIMIZE_HPP

@@ -32,7 +32,7 @@ int main ( int argc, char* argv[] ) {
     FILE* fp = fopen ( argv[1], "wb" );
     FileSink sink ( fp );
     for ( size_t word = 0; word < 65536; ++word ) {
-        Uint16ToUtf8 ( word, &sink );
+        uint16_to_utf8 ( word, &sink );
     }
     fclose ( fp );
     return 0;
