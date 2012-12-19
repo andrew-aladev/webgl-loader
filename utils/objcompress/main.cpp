@@ -78,7 +78,7 @@ int main ( int argc, const char* argv[] ) {
             const size_t here = group_starts[i-1].offset;
             const size_t length = group_starts[i].offset - here;
             group_lengths.push_back ( length );
-            vertex_optimizer.AddTriangles ( &draw_mesh.indices[here], length,
+            vertex_optimizer.add_triangles ( &draw_mesh.indices[here], length,
                                             &webgl_meshes );
         }
         const size_t here = group_starts.back().offset;
@@ -86,7 +86,7 @@ int main ( int argc, const char* argv[] ) {
         const bool divisible_by_3 = length % 3 == 0;
         assert ( divisible_by_3 );
         group_lengths.push_back ( length );
-        vertex_optimizer.AddTriangles ( &draw_mesh.indices[here], length,
+        vertex_optimizer.add_triangles ( &draw_mesh.indices[here], length,
                                         &webgl_meshes );
 
         std::vector<std::string> material;

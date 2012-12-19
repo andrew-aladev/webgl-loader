@@ -17,7 +17,6 @@
 #ifndef WEBGL_LOADER_UTF8_HPP
 #define WEBGL_LOADER_UTF8_HPP
 
-#include <webgl-loader/base.hpp>
 #include <webgl-loader/stream.hpp>
 
 namespace webgl_loader {
