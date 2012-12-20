@@ -27,16 +27,16 @@ public:
     void TestFromMemory() {
         const char bytes[] = { 1, 2, 3, 4, 5 };
         BufferedInput bi ( bytes, sizeof ( bytes ) );
-        assert ( kNoError == bi.error() );
+        assert ( K_NO_ERROR == bi.error() );
         int sum = 0;
         while ( bi.cursor != bi.end() ) {
             sum += *bi.cursor++ ;
         }
         assert ( 15 == sum );
-        assert ( kNoError == bi.error() );
-        bi.Refill();
+        assert ( K_NO_ERROR == bi.error() );
+        bi.refill();
         assert ( bi.begin() == bi.cursor );
-        assert ( kEndOfFile == bi.error() );
+        assert ( K_END_OF_FILE == bi.error() );
         sum = 0;
         while ( bi.cursor != bi.end() ) {
             sum += *bi.cursor++;
