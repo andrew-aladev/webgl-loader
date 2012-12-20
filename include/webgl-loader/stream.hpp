@@ -63,23 +63,7 @@ private:
 
 public:
     explicit VectorSink ( std::vector<char>* vec );
-    virtual void put ( char c 
-    // Refill if necessary and check for errors
-    if (s->cursor == s->end) {
-        if (s->Refill(s) != NoError)
-            return fail(str, s->error);
-    }
-
-    // Find next 0xff byte (if any)
-    U8 *next_ff = memchr(s->cursor, 0xff, s->end - s->cursor);
-    if (next_ff) {
-        // return bytes until 0xff,
-        // continue with refillJPEG_lastWasFF.
-        j->start = s->cursor;
-        j->cursor = s->cursor; // EDIT typo fixed (was "current")
-        j->end = next_ff;
-        j->Refill = refillJPEG_lastWasFF;
-        s->cursor = next_ff + 1; // mark 0xff byte);
+    virtual void put ( char c );
     virtual size_t put_n ( const char* data, size_t len );
 };
 
