@@ -28,8 +28,10 @@ struct Bounds {
     float maxes[8];
 
     void  clear();
+
     void  enclose_attrib ( const float* attribs );
     void  enclose ( const AttribList& attribs );
+
     float uniform_scale() const;
 };
 

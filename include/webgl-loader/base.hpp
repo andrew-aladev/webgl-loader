@@ -53,18 +53,20 @@ struct WebGLMesh {
 
 typedef std::vector<WebGLMesh> WebGLMeshList;
 
-static inline int32_t strtoint ( const char* str, const char** endptr ) {
+// TODO: find the right way to remove all this utils
+
+static inline int32_t str_to_int ( const char* str, const char** endptr ) {
     return static_cast<int32_t> ( strtol ( str, const_cast<char**> ( endptr ), 10 ) );
 }
 
-static inline const char* StripLeadingWhitespace ( const char* str ) {
+static inline const char* strip_leading_whitespace ( const char* str ) {
     while ( isspace ( *str ) ) {
         ++str;
     }
     return str;
 }
 
-static inline char* StripLeadingWhitespace ( char* str ) {
+static inline char* strip_leading_whitespace ( char* str ) {
     while ( isspace ( *str ) ) {
         ++str;
     }
@@ -72,7 +74,7 @@ static inline char* StripLeadingWhitespace ( char* str ) {
 }
 
 // Like basename.
-static inline const char* StripLeadingDir ( const char* const str ) {
+static inline const char* strip_leading_dir ( const char* const str ) {
     const char* last_slash = NULL;
     const char* pos = str;
     while ( const char ch = *pos ) {
@@ -84,15 +86,14 @@ static inline const char* StripLeadingDir ( const char* const str ) {
     return last_slash ? ( last_slash + 1 ) : str;
 }
 
-static inline void TerminateAtNewlineOrComment ( char* str ) {
+static inline void terminate_at_newline_or_comment ( char* str ) {
     char* newline = strpbrk ( str, "#\r\n" );
     if ( newline ) {
         *newline = '\0';
     }
 }
 
-static inline const char* ConsumeFirstToken ( const char* const line,
-        std::string* token ) {
+static inline const char* consume_first_token ( const char* const line, std::string* token ) {
     const char* curr = line;
     while ( char ch = *curr ) {
         if ( isspace ( ch ) ) {
@@ -108,23 +109,27 @@ static inline const char* ConsumeFirstToken ( const char* const line,
     return curr;
 }
 
-static inline void ToLower ( const char* in, std::string* out ) {
+static inline void to_lower ( const char* in, std::string* out ) {
     while ( char ch = *in ) {
         out->push_back ( tolower ( ch ) );
         ++in;
     }
 }
 
-static inline void ToLowerInplace ( std::string* in ) {
+static inline void to_lower_inplace ( std::string* in ) {
     std::string& s = *in;
     for ( size_t i = 0; i < s.size(); ++i ) {
         s[i] = tolower ( s[i] );
     }
 }
 
-uint32_t SimpleHash ( char *key, size_t len, uint32_t seed = 0 );
-void ToHex ( uint32_t w, char out[9] );
-uint16_t Quantize ( float f, float in_min, float in_scale, uint16_t out_max );
+// TODO: use correct hash functions from well supported library
+uint32_t simple_hash ( char *key, size_t len, uint32_t seed = 0 );
+
+// TODO: use sprintf or stringstream
+void to_hex ( uint32_t w, char out[9] );
+
+uint16_t quantize ( float f, float in_min, float in_scale, uint16_t out_max );
 
 } // namespace webgl_loader
 

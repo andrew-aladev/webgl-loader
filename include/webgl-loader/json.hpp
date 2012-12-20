@@ -21,6 +21,8 @@
 
 namespace webgl_loader {
 
+// TODO: bind such interface to well supported library with unicode support
+
 // JsonSink will generate JSON in the ByteSink passed in, but does
 // not actually own the backing data. Performs rudimentary grammar
 // checking. It will automatically add delimiting punctuation and
@@ -58,18 +60,22 @@ public:
     void put_int ( int i );
     void put_float ( float f );
     void put_string ( const char* str );
+
     void begin_array();
     void begin_object();
+
     void end();
     void end_all();
 
 private:
     State get_state() const;
-    void set_state ( State state );
-    void push_state ( State state );
-    void pop_state();
-    void update_state();
+    void  set_state ( State state );
+    void  push_state ( State state );
+    void  pop_state();
+    void  update_state();
+
     void check_not_key() const;
+
     void on_put_value();
     void put ( char c );
     void put_n ( const char* str, size_t len );

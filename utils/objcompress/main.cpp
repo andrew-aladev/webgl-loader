@@ -33,7 +33,7 @@ int main ( int argc, const char* argv[] ) {
     WavefrontObjFile obj ( fp );
     fclose ( fp );
 
-    printf ( "MODELS[\'%s\'] = {\n", StripLeadingDir ( argv[1] ) );
+    printf ( "MODELS[\'%s\'] = {\n", strip_leading_whitespace ( argv[1] ) );
     puts ( "  materials: {" );
     const MaterialList& materials = obj.materials();
     for ( size_t i = 0; i < materials.size(); ++i ) {
@@ -106,9 +106,9 @@ int main ( int argc, const char* argv[] ) {
             index_length.push_back ( num_indices / 3 );
             offset += num_attribs + num_indices;
         }
-        const uint32_t hash = SimpleHash ( &utf8[0], utf8.size() );
+        const uint32_t hash = simple_hash ( &utf8[0], utf8.size() );
         char buf[9] = { '\0' };
-        ToHex ( hash, buf );
+        to_hex ( hash, buf );
         // TODO: this needs to handle paths.
         std::string out_fn = std::string ( buf ) + "." + argv[2];
         FILE* out_fp = fopen ( out_fn.c_str(), "wb" );
