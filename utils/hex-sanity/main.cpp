@@ -23,7 +23,7 @@ int main() {
     for ( size_t i = 0; i < 8; ++i ) {
         for ( size_t j = 1; j < 16; ++j ) {
             const uint32_t w = j << ( 4*i );
-            ToHex ( w, buf );
+            to_hex ( w, buf );
             puts ( buf );
         }
     }

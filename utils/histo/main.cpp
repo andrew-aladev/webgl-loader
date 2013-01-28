@@ -29,7 +29,7 @@ void PrintByteHistogram ( FILE* fp ) {
     NullSink null_sink;
     ByteHistogramSink histo_sink ( &null_sink );
 
-    while ( kNoError == input.Refill() ) {
+    while ( K_NO_ERROR == input.refill() ) {
         const size_t count = input.end() - input.cursor;
         histo_sink.put_n ( input.cursor, count );
         input.cursor += count;

@@ -25,8 +25,20 @@
 
 namespace webgl_loader {
 
-// A short list of floats, useful for parsing a single vector
-// attribute.
+// TODO: bind such interface to well supported library to load from multiple formats
+
+// TODO: make enum
+static inline size_t position_dim() {
+    return 3;
+}
+static inline size_t texcoord_dim() {
+    return 2;
+}
+static inline size_t normal_dim() {
+    return 3;
+}
+
+// A short list of floats, useful for parsing a single vector attribute.
 class ShortFloatList {
 public:
     // MeshLab can create position attributes with
@@ -39,13 +51,16 @@ private:
 
 public:
     ShortFloatList();
-    void clear();
-    size_t parse_line ( const char* line );
+
+    void   clear();
+    bool   empty() const;
+    size_t size() const;
     float operator[] ( size_t idx ) const;
+
+    size_t parse_line ( const char* line );
+
     void append_to ( AttribList* attribs ) const;
     void append_n_to ( AttribList* attribs, const size_t sz ) const;
-    bool empty() const;
-    size_t size() const;
 };
 
 class IndexFlattener {
@@ -83,16 +98,6 @@ public:
 private:
     std::pair<int32_t, bool> get_flattened_index_from_map ( int32_t position_index, int32_t texcoord_index, int32_t normal_index );
 };
-
-static inline size_t position_dim() {
-    return 3;
-}
-static inline size_t texcoord_dim() {
-    return 2;
-}
-static inline size_t normal_dim() {
-    return 3;
-}
 
 // TODO: Make a c'tor to properly initialize.
 struct GroupStart {

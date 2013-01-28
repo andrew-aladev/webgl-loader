@@ -42,229 +42,108 @@ private:
 
 class NullSink : public ByteSinkInterface {
 public:
-    NullSink() { }
-
-    virtual void put ( char ) { }
-
-    virtual size_t put_n ( const char*, size_t len ) {
-        return len;
-    }
+    NullSink();
+    virtual void put ( char );
+    virtual size_t put_n ( const char*, size_t len );
 };
 
 class FileSink : public ByteSinkInterface {
-public:
-    // |fp| is unowned and must not be NULL.
-    explicit FileSink ( FILE* fp )
-        : fp_ ( fp ) {
-    }
-
-    virtual void put ( char c ) {
-        putc ( c, fp_ );
-    }
-
-    virtual size_t put_n ( const char* data, size_t len ) {
-        return fwrite ( data, 1, len, fp_ );
-    }
-
 private:
     FILE *fp_;  // unowned.
+public:
+    explicit FileSink ( FILE* fp );
+    virtual void put ( char c );
+
+    virtual size_t put_n ( const char* data, size_t len );
 };
 
 class VectorSink : public ByteSinkInterface {
-public:
-    // |vec| is unowned and must not be NULL.
-    explicit VectorSink ( std::vector<char>* vec )
-        : vec_ ( vec ) {
-    }
-
-    virtual void put ( char c ) {
-        vec_->push_back ( c );
-    }
-
-    virtual size_t put_n ( const char* data, size_t len ) {
-        vec_->insert ( vec_->end(), data, data + len );
-        return len;
-    }
-
 private:
     std::vector<char>* vec_;  // unowned.
+
+public:
+    explicit VectorSink ( std::vector<char>* vec );
+    virtual void put ( char c );
+    virtual size_t put_n ( const char* data, size_t len );
 };
 
 class StringSink : public ByteSinkInterface {
-public:
-    // |str| is unowned and must not be NULL.
-    explicit StringSink ( std::string* str )
-        : str_ ( str ) {
-        assert ( str != NULL );
-    }
-
-    virtual void put ( char c ) {
-        str_->push_back ( c );
-    }
-
-    virtual size_t put_n ( const char* data, size_t len ) {
-        str_->append ( data, len );
-        return len;
-    }
-
 private:
     std::string* str_;  // unowned.
+
+public:
+    explicit StringSink ( std::string* str );
+    virtual void put ( char c );
+    virtual size_t put_n ( const char* data, size_t len );
 };
 
 class ByteHistogramSink : public ByteSinkInterface {
-public:
-    // |sink| in unowned and must not be NULL.
-    explicit ByteHistogramSink ( ByteSinkInterface* sink )
-        : sink_ ( sink ) {
-        memset ( histo_, 0, sizeof ( histo_ ) );
-    }
-
-    virtual void put ( char c ) {
-        histo_[static_cast<uint8_t> ( c )]++;
-        sink_->put ( c );
-    }
-
-    virtual size_t put_n ( const char* data, size_t len ) {
-        const char* const end = data + len;
-        for ( const char* iter = data; iter != end; ++iter ) {
-            histo_[static_cast<uint8_t> ( *iter )]++;
-        }
-        return sink_->put_n ( data, len );
-    }
-
-    const size_t* histo() const {
-        return histo_;
-    }
-
 private:
     size_t histo_[256];
     ByteSinkInterface* sink_;  // unowned.
+
+public:
+    explicit ByteHistogramSink ( ByteSinkInterface* sink );
+    virtual void put ( char c );
+    virtual size_t put_n ( const char* data, size_t len );
+    const size_t* histo() const;
 };
 
 // TODO: does it make sense to have a global enum? How should
 // new BufferedInput implementations define new error codes?
 enum ErrorCode {
-    kNoError = 0,
-    kEndOfFile = 1,
-    kFileError = 2,  // TODO: translate errno.
+    K_NO_ERROR    = 0,
+    K_END_OF_FILE = 1,
+    K_FILE_ERROR  = 2,  // TODO: translate errno.
 };
 
 // Adapted from ryg's BufferedStream abstraction:
 // http://fgiesen.wordpress.com/2011/11/21/buffer-centric-io/
 class BufferedInput {
+private:
+    // Disallow copy and assign.
+    BufferedInput ( const BufferedInput& );
+    void operator= ( const BufferedInput& );
+
 public:
     typedef ErrorCode ( *Refiller ) ( BufferedInput* );
 
-    BufferedInput ( Refiller refiller = RefillZeroes )
-        : cursor ( NULL ),
-          begin_ ( NULL ),
-          end_ ( NULL ),
-          refiller_ ( refiller ),
-          error_ ( kNoError ) {
-    }
-
-    // InitFromMemory.
-    BufferedInput ( const char* data, size_t length )
-        : cursor ( data ),
-          begin_ ( data ),
-          end_ ( data + length ),
-          refiller_ ( RefillEndOfFile ),
-          error_ ( kNoError ) {
-    }
-
-    const char* begin() const {
-        return begin_;
-    }
-
-    const char* end() const {
-        return end_;
-    }
-
-    const char* cursor;
-
-    ErrorCode error() const {
-        assert ( begin() <= cursor );
-        assert ( cursor <= end() );
-        return error_;
-    }
-
-    ErrorCode Refill() {
-        assert ( begin() <= cursor );
-        assert ( cursor <= end() );
-        if ( cursor == end() ) {
-            error_ = refiller_ ( this );
-        }
-        return error_;
-    }
-
 protected:
-    static ErrorCode RefillZeroes ( BufferedInput* bi ) {
-        static const char kZeroes[64] = { 0 };
-        bi->cursor = kZeroes;
-        bi->begin_ = kZeroes;
-        bi->end_ = kZeroes + sizeof ( kZeroes );
-        return bi->error_;
-    }
-
-    static ErrorCode RefillEndOfFile ( BufferedInput* bi ) {
-        return bi->fail ( kEndOfFile );
-    }
-
-    ErrorCode fail ( ErrorCode why ) {
-        error_ = why;
-        refiller_ = RefillZeroes;
-        return Refill();
-    }
-
     const char* begin_;
     const char* end_;
     Refiller refiller_;
     ErrorCode error_;
 
-private:
-    // Disallow copy and assign.
-    BufferedInput ( const BufferedInput& );
-    void operator= ( const BufferedInput& );
+    static ErrorCode refill_zeroes ( BufferedInput* bi );
+    static ErrorCode refill_end_of_file ( BufferedInput* bi );
+    ErrorCode fail ( ErrorCode why );
+
+public:
+    BufferedInput ( Refiller refiller = refill_zeroes );
+    BufferedInput ( const char* data, size_t length );
+
+    const char* begin() const;
+    const char* end() const;
+    const char* cursor;
+
+    ErrorCode error() const;
+    ErrorCode refill();
 };
 
 class BufferedInputStream : public BufferedInput {
-public:
-    BufferedInputStream ( FILE* fp, char* buf, size_t size )
-        : BufferedInput ( RefillFread ),
-          fp_ ( fp ),
-          buf_ ( buf ),
-          size_ ( size ) {
-        assert ( buf != NULL );
-        // Disable buffering since we're doing it ourselves.
-        // TODO check error.
-        setvbuf ( fp_, NULL, _IONBF, 0 );
-        cursor = buf;
-        begin_ = buf;
-        end_ = buf;
-    }
-protected:
-    // TODO: figure out how to automate this casting pattern.
-    static ErrorCode RefillFread ( BufferedInput* bi ) {
-        return static_cast<BufferedInputStream*> ( bi )->DoRefillFread();
-    }
 private:
-    ErrorCode DoRefillFread() {
-        const size_t bytes_read = fread ( buf_, 1, size_, fp_ );
-        cursor = begin_;
-        end_ = begin_ + bytes_read;
-        if ( bytes_read < size_ ) {
-            if ( feof ( fp_ ) ) {
-                refiller_ = RefillEndOfFile;
-            } else if ( ferror ( fp_ ) ) {
-                return fail ( kFileError );
-            }
-        }
-        return kNoError;
-    }
-
     FILE* fp_;
     char* buf_;
     size_t size_;
+
+public:
+    BufferedInputStream ( FILE* fp, char* buf, size_t size );
+
+protected:
+    static ErrorCode refill_fread ( BufferedInput* bi );
+
+private:
+    ErrorCode do_refill_fread();
 };
 
 }  // namespace webgl_loader

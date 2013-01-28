@@ -20,7 +20,7 @@ namespace webgl_loader {
 
 // Jenkin's One-at-a-time Hash. Not the best, but simple and
 // portable.
-uint32_t SimpleHash ( char *key, size_t len, uint32_t seed) {
+uint32_t simple_hash ( char *key, size_t len, uint32_t seed) {
     uint32_t hash = seed;
     for ( size_t i = 0; i < len; ++i ) {
         hash += static_cast<unsigned char> ( key[i] );
@@ -33,7 +33,7 @@ uint32_t SimpleHash ( char *key, size_t len, uint32_t seed) {
     return hash;
 }
 
-void ToHex ( uint32_t w, char out[9] ) {
+void to_hex ( uint32_t w, char out[9] ) {
     const char k_offset0  = '0';
     const char k_offset10 = 'a' - 10;
     out[8] = '\0';
@@ -44,7 +44,7 @@ void ToHex ( uint32_t w, char out[9] ) {
     }
 }
 
-uint16_t Quantize ( float f, float in_min, float in_scale, uint16_t out_max ) {
+uint16_t quantize ( float f, float in_min, float in_scale, uint16_t out_max ) {
     return static_cast<uint16_t> ( out_max * ( ( f-in_min ) / in_scale ) );
 }
 

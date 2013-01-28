@@ -21,6 +21,8 @@
 
 namespace webgl_loader {
 
+// TODO: use vcacne implementation
+
 // TODO: since most vertices are part of 6 faces, you can optimize
 // this by using a small inline buffer.
 typedef std::vector<int> FaceList;

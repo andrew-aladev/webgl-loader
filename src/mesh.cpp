@@ -244,9 +244,9 @@ void Material::dump_json ( FILE* out ) const {
     fprintf ( out, "    \"%s\": { ", name.c_str() );
     if ( map_kd.empty() ) {
         fprintf ( out, "\"kd\": [%hu, %hu, %hu] }",
-                  Quantize ( kd[0], 0, 1, 255 ),
-                  Quantize ( kd[1], 0, 1, 255 ),
-                  Quantize ( kd[2], 0, 1, 255 ) );
+                  quantize ( kd[0], 0, 1, 255 ),
+                  quantize ( kd[1], 0, 1, 255 ),
+                  quantize ( kd[2], 0, 1, 255 ) );
     } else {
         fprintf ( out, "\"map_kd\": \"%s\" }", map_kd.c_str() );
     }
@@ -267,8 +267,8 @@ void WavefrontMtlFile::parse_file ( FILE* fp ) {
     char buffer[kLineBufferSize];
     unsigned int line_num = 1;
     while ( fgets ( buffer, kLineBufferSize, fp ) != NULL ) {
-        char* stripped = StripLeadingWhitespace ( buffer );
-        TerminateAtNewlineOrComment ( stripped );
+        char* stripped = strip_leading_whitespace ( buffer );
+        terminate_at_newline_or_comment ( stripped );
         parse_line ( stripped, line_num++ );
     }
 }
@@ -309,13 +309,13 @@ void WavefrontMtlFile::parse_color ( const char* line, unsigned int line_num ) {
 }
 
 void WavefrontMtlFile::parse_map_kd ( const char* line, uint32_t line_num ) {
-    current_->map_kd = StripLeadingWhitespace ( line );
+    current_->map_kd = strip_leading_whitespace ( line );
 }
 
 void WavefrontMtlFile::parse_new_mtl ( const char* line, uint32_t line_num ) {
     materials_.push_back ( Material() );
     current_ = &materials_.back();
-    ToLower ( StripLeadingWhitespace ( line ), &current_->name );
+    to_lower ( strip_leading_whitespace ( line ), &current_->name );
 }
 
 WavefrontObjFile::WavefrontObjFile ( FILE* fp ) {
@@ -368,8 +368,8 @@ void WavefrontObjFile::parse_file ( FILE* fp ) {
     char buffer[kLineBufferSize] = { 0 };
     unsigned int line_num = 1;
     while ( fgets ( buffer, kLineBufferSize, fp ) != NULL ) {
-        char* stripped = StripLeadingWhitespace ( buffer );
-        TerminateAtNewlineOrComment ( stripped );
+        char* stripped = strip_leading_whitespace ( buffer );
+        terminate_at_newline_or_comment ( stripped );
         parse_line ( stripped, line_num++ );
     }
 }
@@ -512,17 +512,17 @@ void WavefrontObjFile::parse_face ( const char* line, uint32_t line_num ) {
 // TODO: convert negative indices (that is, relative to the end of the current vertex positions) to more conventional positive indices.
 const char* WavefrontObjFile::parse_indices ( const char* line, uint32_t line_num, int32_t* position_index, int32_t* texcoord_index, int32_t* normal_index ) {
     const char* endptr = NULL;
-    *position_index = strtoint ( line, &endptr );
+    *position_index = str_to_int ( line, &endptr );
     if ( *position_index == 0 ) {
         return NULL;
     }
     if ( endptr != NULL && *endptr == '/' ) {
-        *texcoord_index = strtoint ( endptr + 1, &endptr );
+        *texcoord_index = str_to_int ( endptr + 1, &endptr );
     } else {
         *texcoord_index = *normal_index = 0;
     }
     if ( endptr != NULL && *endptr == '/' ) {
-        *normal_index = strtoint ( endptr + 1, &endptr );
+        *normal_index = str_to_int ( endptr + 1, &endptr );
     } else {
         *normal_index = 0;
     }
@@ -535,8 +535,8 @@ const char* WavefrontObjFile::parse_indices ( const char* line, uint32_t line_nu
 // Afterwards, after we collect group populations, we can go back and give them real names.
 void WavefrontObjFile::parse_group ( const char* line, uint32_t line_num ) {
     std::string token;
-    while ( ( line = ConsumeFirstToken ( line, &token ) ) ) {
-        ToLowerInplace ( &token );
+    while ( ( line = consume_first_token ( line, &token ) ) ) {
+        to_lower_inplace ( &token );
         group_counts_[token]++;
         line_to_groups_.insert ( std::make_pair ( line_num, token ) );
     }
@@ -552,7 +552,7 @@ void WavefrontObjFile::parse_smoothing_group ( const char* line, uint32_t line_n
 }
 
 void WavefrontObjFile::parse_mtl_lib ( const char* line, uint32_t line_num ) {
-    FILE* fp = fopen ( StripLeadingWhitespace ( line ), "r" );
+    FILE* fp = fopen ( strip_leading_whitespace ( line ), "r" );
     if ( !fp ) {
         warn_line ( "mtllib not found", line_num );
         return;
@@ -568,7 +568,7 @@ void WavefrontObjFile::parse_mtl_lib ( const char* line, uint32_t line_num ) {
 
 void WavefrontObjFile::parse_use_mtl ( const char* line, uint32_t line_num ) {
     std::string usemtl;
-    ToLower ( StripLeadingWhitespace ( line ), &usemtl );
+    to_lower ( strip_leading_whitespace ( line ), &usemtl );
     MaterialBatches::iterator iter = material_batches_.find ( usemtl );
     if ( iter == material_batches_.end() ) {
         error_line ( "material not found", line_num );

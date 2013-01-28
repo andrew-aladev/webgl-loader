@@ -82,15 +82,18 @@ public:
 
 private:
     void simple_predictor ( size_t max_backref, size_t triangle_start_index );
-    void encode_delta_attrib ( size_t index, const uint16_t* predicted );
     void parallelogram_predictor ( uint16_t backref_edge, size_t backref_vert, size_t triangle_start_index );
+    
     bool highwater_mark ( uint16_t index, uint16_t start_code = 0 );
+    
+    void encode_delta_attrib ( size_t index, const uint16_t* predicted );
     void update_last_attrib ( uint16_t index );
+    
     size_t lru_edge ( const uint16_t* triangle, size_t* match_indices, size_t* match_winding );
-    void lru_edge_zero ( const uint16_t* triangle );
-    void lru_edge_one ( size_t i0, size_t i1, size_t match_index );
-    void lru_edge_two ( int32_t i0, size_t match_index0, size_t match_index1 );
-    void lru_edge_three ( size_t match_index0, size_t match_index1, size_t match_index2 );
+    void   lru_edge_zero ( const uint16_t* triangle );
+    void   lru_edge_one ( size_t i0, size_t i1, size_t match_index );
+    void   lru_edge_two ( int32_t i0, size_t match_index0, size_t match_index1 );
+    void   lru_edge_three ( size_t match_index0, size_t match_index1, size_t match_index2 );
 };
 
 }  // namespace webgl_loader

@@ -22,7 +22,7 @@ void attribs_to_quantized_attribs ( const AttribList& interleaved_attribs, const
     quantized_attribs->resize ( interleaved_attribs.size() );
     for ( size_t i = 0; i < interleaved_attribs.size(); i += 8 ) {
         for ( size_t j = 0; j < 8; ++j ) {
-            quantized_attribs->at ( i + j ) = Quantize (
+            quantized_attribs->at ( i + j ) = quantize (
                                                   interleaved_attribs[i + j],
                                                   bounds_params.mins[j],
                                                   bounds_params.scales[j],
@@ -39,8 +39,8 @@ void compress_aabb_to_utf8 ( const Bounds& bounds, const BoundsParams& total_bou
     for ( int32_t i = 0; i < 3; ++i ) {
         float total_min = total_bounds.mins[i];
         float total_scale = total_bounds.scales[i];
-        mins[i]  = Quantize ( bounds.mins[i],  total_min, total_scale, maxPosition );
-        maxes[i] = Quantize ( bounds.maxes[i], total_min, total_scale, maxPosition );
+        mins[i]  = quantize ( bounds.mins[i],  total_min, total_scale, maxPosition );
+        maxes[i] = quantize ( bounds.maxes[i], total_min, total_scale, maxPosition );
     }
     for ( int32_t i = 0; i < 3; ++i ) {
         uint16_to_utf8 ( mins[i], utf8 );
