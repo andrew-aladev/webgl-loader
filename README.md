@@ -20,3 +20,4 @@ Utils are taken from [nothings.org](http://nothings.org/stb/)
 [The SIGGRAPH 2011 talk slides](https://docs.google.com/present/view?id=d4wf4t2_251g4kjtwgs).
 
 Models from [The Utah 3D Animation Repository](http://www.sci.utah.edu/~wald/animrep/) and [The Stanford 3D Scanning Repository](http://graphics.stanford.edu/data/3Dscanrep/).
+
